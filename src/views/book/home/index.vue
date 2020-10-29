@@ -1,5 +1,4 @@
 <template>
-	<div>ass</div>
 </template>
 
 <script>

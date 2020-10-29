@@ -1,13 +1,13 @@
 export default [
 	{
 	  path: '/',
-	  redirect: '/index'
+	  redirect: '/home'
 	},
   {
-    path: '/index',
-		name: 'index',
+    path: '/home',
+		name: 'home',
     component: resolve => {
-      require(['@/views/index'], resolve)
+      require(['@/views/book/home'], resolve)
     },
 		meta: {
 			title: '首页'

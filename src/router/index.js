@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import music from './music'
+import book from './book'
 Vue.use(Router)
 const router = new Router({
   routes: [
-		...music,
+		...book,
   ]
 })
 
