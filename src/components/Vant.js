@@ -21,7 +21,9 @@ import {
   Slider,
   Search,
   Tag,
-  Lazyload
+  Lazyload,
+	Tabbar,
+	TabbarItem
 } from "vant";
 
 Vue.use(Icon);
@@ -46,3 +48,5 @@ Vue.use(Slider);
 Vue.use(Search);
 Vue.use(Tag);
 Vue.use(Lazyload);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
