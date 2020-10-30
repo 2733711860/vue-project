@@ -92,6 +92,7 @@
 				v-for="(item, index) in bookList"
 			  :key="index + 'book'"
 				:bookBasic="item"
+				@click="goDetail(item)"
 			></reader-item-book>
 		</div>
 	</div>
@@ -123,6 +124,15 @@ export default {
 					bookImg: require('../../../../assets/img/wgsd.jpg')
 				}
 			]
+		}
+	},
+	
+	methods: { // "vue-router": "^3.0.6",
+		goDetail(item) {
+			console.log(12)
+			this.$router.push({
+				path: '/book/bookRelate/detail'
+			})
 		}
 	}
 }

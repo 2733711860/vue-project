@@ -1,5 +1,5 @@
 <template>
-	<div class="module-book">
+	<div class="module-book" @click="goPage">
 		<img class="module-book-pic" :src="bookBasic.bookImg" />
 		<div class="module-book-content">
 			<h1>{{bookBasic.bookName}}</h1>
@@ -22,6 +22,12 @@ export default {
 			type: Object,
 			default: () => {}
 		}
+	},
+	
+	methods: {
+		goPage () {
+			this.$emit('click')
+		}
 	}
 }
 </script>
@@ -31,11 +37,15 @@ export default {
 		display: flex;
 		padding: 10px 0;
 		.module-book-pic{
-			width: 70px;
+			width: 80px;
+			height: 100px;
 			border-radius: 3px;
 		}
 		.module-book-content{
 			padding-left: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
 			h1{
 				color: #363636;
 				margin-bottom: 13px;

@@ -12,7 +12,54 @@
 			</div>
 		</div>
 		
-		<div class="detail-brief">{{bookDetail.bookDesc}}</div>
+		<div class="detail-brief">
+			<div :class="[showAll ? '' : 'moreClass']">
+				故事简介：{{bookDetail.bookDesc}}
+			</div>
+			<div class="more-btn" v-if="!showAll" @click="showAll = true">...全文</div>
+		</div>
+		
+		<div class="chapter-msg">
+			<span class="chapter-title">查看目录</span>
+			<span class="newest">
+				<span class="chapter-name">最新：第三千九百一十三章  终局终局终局终局</span>
+				<span class="chapter-btn">
+					已完结
+					<van-icon name="arrow" />
+				</span>
+			</span>
+		</div>
+		
+		<div class="like-div">
+			<div class="module-top">
+				<div class="module-top-left">
+					<span></span>
+					<div>猜你喜欢</div>
+				</div>
+				<div class="module-top-right">
+					<span>更多</span>
+					<van-icon name="arrow" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="like-div">
+			<div class="module-top">
+				<div class="module-top-left">
+					<span></span>
+					<div>热门书评</div>
+				</div>
+				<div class="module-top-right">
+					<span>更多</span>
+					<van-icon name="arrow" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="detail-bottm">
+			<div class="btn-one">加入书架</div>
+			<div class="btn-two">开始阅读</div>
+		</div>
 	</div>
 </template>
 
@@ -32,7 +79,8 @@ export default {
 				color: '#ffffff'
 			},
 			scrollTopValue: -1, // 滚动距顶部的距离
-			title: '',
+			title: '书籍信息',
+			showAll: false, // 简介是否显示全部
 			
 			bookDetail: {
 				bookName: '红楼梦',
@@ -52,8 +100,9 @@ export default {
 			if (opacity <= 1) 
 				this.navBarStyle.backgroundColor = "rgba(255, 255, 255, " + opacity + ")",
 				this.navBarStyle.color = "#ffffff",
-				this.title = '';
+				this.title = '书籍信息';
 			else 
+				this.navBarStyle.backgroundColor = "rgba(255, 255, 255, 1)",
 				this.navBarStyle.color = "inherit",
 				this.title = this.bookDetail.bookName;
 		}
@@ -63,7 +112,35 @@ export default {
 
 <style scoped="scoped" lang="less">
 	.detail-page{
+		height: 100vh;
 		overflow: scroll;
+		padding-bottom: 50px;
+		.detail-bottm{
+			width: 100%;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			position: fixed;
+			bottom: 0;
+			border-top: 1px solid #EFEDEF;
+			div{
+				height: 30px;
+				line-height: 30px;
+				width: 150px;
+				text-align: center;
+				border-radius: 30px;
+				font-size: 14px;
+			}
+			.btn-one{
+				color: #F48E4E;
+				background-color: #FFDEC6;
+			}
+			.btn-two{
+				color: #FFEAE1;
+				background-color: #F24747;
+			}
+		}
 	}
 	.detail-top{
 		width: 100%;
@@ -74,6 +151,7 @@ export default {
 		color: #ffffff;
 		img{
 			width: 100px;
+			height: 120px;
 			margin-right: 20px;
 			border-radius: 5px;
 		}
@@ -97,12 +175,93 @@ export default {
 		}
 	}
 	.detail-brief{
-		text-overflow: -o-ellipsis-lastline;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		-webkit-box-orient: vertical;
+		font-size: 12px;
+		line-height: 18px;
+		text-indent: 28px;
+		padding: 10px;
+		position: relative;
+		background-color: #FFFFFF;
+		.more-btn{
+			position: absolute;
+			width: 100px;
+			text-align: right;
+			bottom: 10px;
+			right: 10px;
+			background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+			color: #1989fa;
+		}
+	}
+	.moreClass{
+		word-break: break-all;
+		display: -webkit-box; /**对象作为伸缩盒子模型展示**/
+		-webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
+		-webkit-line-clamp: 2; /**显示的行数**/
+		overflow: hidden; /**隐藏超出的内容**/
+	}
+	
+	.chapter-msg{
+		font-size: 12px;
+		height: 30px;
+		line-height: 30px;
+		margin-top: 10px;
+		background-color: #FFFFFF;
+		display: flex;
+		.chapter-title{
+			color: #1989fa;
+			padding: 0 10px;
+		}
+		.newest{
+			flex: 1;
+			display: flex;
+			justify-content: space-between;
+			.chapter-name{
+				flex: 1;
+				display:inline-block;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.chapter-btn{
+				display: flex;
+				align-items: center;
+				padding-right: 10px;
+			}
+		}
+	}
+	
+	.like-div{
+		margin-top: 10px;
+		background-color: #FFFFFF;
+		height: 300px;
+		.module-top{
+			height: 40px;
+			padding: 0 10px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 1px solid #EDEDED;
+			.module-top-left, .module-top-right{
+				display: flex;
+				align-items: center;
+			}
+			.module-top-left{
+				span{
+					display: inline-block;
+					width: 4px;
+					height: 14px;
+					margin-right: 5px;
+					border-radius: 1px;
+					background-color: #1989fa;
+				}
+				div{
+					color: #000000;
+					font-weight: 550;
+				}
+			}
+			.module-top-right{
+				color: #7b7c7d;
+				font-size: 12px;
+			}
+		}
 	}
 </style>
