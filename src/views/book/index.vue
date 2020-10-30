@@ -1,8 +1,8 @@
 <template>
 	<div class="book-page">
-		<reader-header></reader-header>
+		<reader-header v-if="$route.meta.showTop"></reader-header>
 		<router-view class="book-content"></router-view>
-		<reader-footer></reader-footer>
+		<reader-footer v-if="$route.meta.showTop"></reader-footer>
 	</div>
 </template>
 
@@ -12,6 +12,9 @@ import readerFooter from './components/reader-footer.vue'
 export default {
 	components: {
 		readerHeader, readerFooter
+	},
+	mounted() {
+		console.log(this.$route.meta.showTop)
 	}
 }
 </script>
@@ -26,5 +29,6 @@ export default {
 		flex: 1;
 		overflow-y: auto;
 		background-color: #F6F7F9;
+		position: relative;
 	}
 </style>

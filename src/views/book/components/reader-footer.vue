@@ -1,20 +1,69 @@
 <template>
-	<van-tabbar route>
-		<van-tabbar-item replace to="/book/home" icon="home-o">书城</van-tabbar-item>
-		<van-tabbar-item replace to="/book/rank" icon="bar-chart-o">榜单</van-tabbar-item>
-		<van-tabbar-item replace to="/book/classify" icon="apps-o">分类</van-tabbar-item>
-		<van-tabbar-item replace to="/book/center" icon="manager-o">我的</van-tabbar-item>
-	</van-tabbar>
+  <div class="me_footr">
+  	<ul class="footer">
+			<li class="item">
+			  <router-link to="/book/shelf" class="flex2" active-class="active">
+					<van-icon class="text" name="send-gift-o"></van-icon>
+			    <p class="text menuText">书架</p>
+			  </router-link>
+			</li>
+	    <li class="item">
+	      <router-link to="/book/home" class="flex2" active-class="active">
+					<van-icon class="text" name="home-o"></van-icon>
+	        <p class="text menuText">书城</p>
+	      </router-link>
+	    </li>
+	    <li class="item">
+	      <router-link to="/book/search" class="flex2" active-class="active">
+	        <van-icon class="text" name="search"></van-icon>
+	        <p class="text menuText">搜索</p>
+	      </router-link>
+	    </li>
+	    <li class="item">
+	      <router-link to="/book/center" class="flex2" active-class="active">
+	        <van-icon class="text" name="contact"></van-icon>
+	        <p class="text menuText">我的</p>
+	      </router-link>
+	    </li>
+	  </ul>
+  </div>
 </template>
 
 <script>
 export default {
-	data () {
-		return {
-		}
+	components: {
+	},
+
+	computed: {
 	}
 }
 </script>
 
-<style>
+<style scoped lang="less">
+.me_footr{
+	height: 50px;
+	.footer {
+	  height: 50px;
+	  width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		.item{
+			position: relative;
+			.flex2{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				.menuText{
+					margin-top: 5px;
+					font-size: 12px;
+				}
+			}
+			.active .text {
+			  color: #000000;
+				font-weight: bold;
+			}
+		}
+	}
+}
 </style>

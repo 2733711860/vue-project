@@ -33,6 +33,7 @@ export default {
   }
 	.app-router-view{
 		height: 100%;
+		color: #535353;
 	}
 </style>
 

@@ -16,7 +16,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		background-color: #EDEDED;
 		.head-left, .head-right{
 			font-size: 12px;
 		}
