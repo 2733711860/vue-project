@@ -1,0 +1,34 @@
+<template>
+	<div class="item-book">
+		<img :src="bookDetail.bookImg" />
+		<div>{{bookDetail.bookName}}</div>
+	</div>
+</template>
+
+<script>
+export default {
+	props: {
+		bookDetail: {
+			type: Object,
+			default: () => {}
+		}
+	}
+}
+</script>
+
+<style scoped="scoped" lang="less">
+	.item-book{
+		display: flex;
+		flex-direction: column;
+		width: 100px;
+		img{
+			width: 100%;
+			height: 120px;
+			border-radius: 3px;
+		}
+		div{
+			font-size: 14px;
+			line-height: 20px;
+		}
+	}
+</style>

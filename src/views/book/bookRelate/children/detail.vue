@@ -12,35 +12,27 @@
 			</div>
 		</div>
 		
-		<div class="detail-brief">
-			<div :class="[showAll ? '' : 'moreClass']">
-				故事简介：{{bookDetail.bookDesc}}
+		<div class="like-div">
+			<div class="module-top">
+				<div class="module-top-left">
+					<span></span>
+					<div>故事简介</div>
+				</div>
+				<div class="module-top-right" @click="showAll = !showAll">
+					<van-icon :name="showAll ? 'arrow-up' : 'arrow-down'" />
+				</div>
 			</div>
-			<div class="more-btn" v-if="!showAll" @click="showAll = true">...全文</div>
+			<div class="detail-brief">
+				<div :class="{'moreClass' : !showAll}">{{bookDetail.bookDesc}}</div>
+			</div>
 		</div>
 		
 		<div class="chapter-msg">
 			<span class="chapter-title">查看目录</span>
 			<span class="newest">
 				<span class="chapter-name">最新：第三千九百一十三章  终局终局终局终局</span>
-				<span class="chapter-btn">
-					已完结
-					<van-icon name="arrow" />
-				</span>
+				<span class="chapter-btn">已完结<van-icon name="arrow" /></span>
 			</span>
-		</div>
-		
-		<div class="like-div">
-			<div class="module-top">
-				<div class="module-top-left">
-					<span></span>
-					<div>猜你喜欢</div>
-				</div>
-				<div class="module-top-right">
-					<span>更多</span>
-					<van-icon name="arrow" />
-				</div>
-			</div>
 		</div>
 		
 		<div class="like-div">
@@ -50,9 +42,53 @@
 					<div>热门书评</div>
 				</div>
 				<div class="module-top-right">
+					<van-icon name="edit" />
+					<span>写书评</span>
+				</div>
+			</div>
+			
+			<div class="book-comment">
+				<reader-comment></reader-comment>
+				<reader-comment></reader-comment>
+				<div class="book-comment-btn">全部书评22条</div>
+			</div>
+		</div>
+		
+		<div class="like-div">
+			<div class="module-top">
+				<div class="module-top-left">
+					<span></span>
+					<div>作者的其他作品</div>
+				</div>
+				<div class="module-top-right">
 					<span>更多</span>
 					<van-icon name="arrow" />
 				</div>
+			</div>
+			
+			<div class="book-list">
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+			</div>
+		</div>
+		
+		<div class="like-div">
+			<div class="module-top">
+				<div class="module-top-left">
+					<span></span>
+					<div>猜你喜欢</div>
+				</div>
+				<div class="module-top-right">
+					<span>换一换</span>
+				</div>
+			</div>
+			
+			<div class="book-list">
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
 			</div>
 		</div>
 		
@@ -65,10 +101,12 @@
 
 <script>
 import readerHeaderTwo from '../../components/reader-header-two.vue'
+import readerItemBookTwo from '../../components/reader-item-book-two.vue'
+import readerComment from '../../components/reader-comment.vue'
 const ANCHOR_SCROLL_TOP = 160
 export default {
 	components: {
-		readerHeaderTwo
+		readerHeaderTwo, readerItemBookTwo, readerComment
 	},
 	
 	data () {
@@ -124,6 +162,7 @@ export default {
 			position: fixed;
 			bottom: 0;
 			border-top: 1px solid #EFEDEF;
+			background-color: #FFFFFF;
 			div{
 				height: 30px;
 				line-height: 30px;
@@ -195,7 +234,7 @@ export default {
 		word-break: break-all;
 		display: -webkit-box; /**对象作为伸缩盒子模型展示**/
 		-webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
-		-webkit-line-clamp: 2; /**显示的行数**/
+		-webkit-line-clamp: 3; /**显示的行数**/
 		overflow: hidden; /**隐藏超出的内容**/
 	}
 	
@@ -232,7 +271,15 @@ export default {
 	.like-div{
 		margin-top: 10px;
 		background-color: #FFFFFF;
-		height: 300px;
+		.book-list{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 10px;
+			.item-book{
+				margin: 5px 0;
+			}
+		}
 		.module-top{
 			height: 40px;
 			padding: 0 10px;
@@ -259,8 +306,18 @@ export default {
 				}
 			}
 			.module-top-right{
-				color: #7b7c7d;
+				color: #1989fa;
 				font-size: 12px;
+			}
+		}
+		
+		.book-comment{
+			.book-comment-btn{
+				height: 40px;
+				line-height: 40px;
+				font-size: 14px;
+				text-align: center;
+				color: #1989fa;
 			}
 		}
 	}

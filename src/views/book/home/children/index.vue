@@ -16,6 +16,7 @@
 				v-for="(item, index) in bookList"
 			  :key="index + 'book'"
 				:bookBasic="item"
+				@click="goDetail(item)"
 			></reader-item-book>
 		</div>
 		
@@ -35,6 +36,7 @@
 				v-for="(item, index) in bookList"
 			  :key="index + 'book'"
 				:bookBasic="item"
+				@click="goDetail(item)"
 			></reader-item-book>
 		</div>
 		
@@ -54,6 +56,7 @@
 				v-for="(item, index) in bookList"
 			  :key="index + 'book'"
 				:bookBasic="item"
+				@click="goDetail(item)"
 			></reader-item-book>
 		</div>
 		
@@ -73,6 +76,7 @@
 				v-for="(item, index) in bookList"
 			  :key="index + 'book'"
 				:bookBasic="item"
+				@click="goDetail(item)"
 			></reader-item-book>
 		</div>
 		
@@ -127,9 +131,8 @@ export default {
 		}
 	},
 	
-	methods: { // "vue-router": "^3.0.6",
+	methods: {
 		goDetail(item) {
-			console.log(12)
 			this.$router.push({
 				path: '/book/bookRelate/detail'
 			})
