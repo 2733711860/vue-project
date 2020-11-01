@@ -19,11 +19,8 @@ export default new Vuex.Store({
 		storage: window.localStorage,
 		reducer(val) {
 			return {
-				mode: val.mode,
-				historyList: val.historyList,
-				volume: val.volume,
-				lastVolumn: val.lastVolumn,
-				isMute: val.isMute
+				cats: val.cats,
+				ranks: val.ranks
 			}
 		}
 	})]

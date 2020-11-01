@@ -13,7 +13,7 @@
 			</div>
 			
 			<reader-item-book
-				v-for="(item, index) in bookList"
+				v-for="(item, index) in likeBooks"
 			  :key="index + 'book'"
 				:bookBasic="item"
 				@click="goDetail(item)"
@@ -33,7 +33,7 @@
 			</div>
 			
 			<reader-item-book
-				v-for="(item, index) in bookList"
+				v-for="(item, index) in maleHots"
 			  :key="index + 'book'"
 				:bookBasic="item"
 				@click="goDetail(item)"
@@ -53,7 +53,7 @@
 			</div>
 			
 			<reader-item-book
-				v-for="(item, index) in bookList"
+				v-for="(item, index) in femaleHots"
 			  :key="index + 'book'"
 				:bookBasic="item"
 				@click="goDetail(item)"
@@ -73,7 +73,7 @@
 			</div>
 			
 			<reader-item-book
-				v-for="(item, index) in bookList"
+				v-for="(item, index) in newBooks"
 			  :key="index + 'book'"
 				:bookBasic="item"
 				@click="goDetail(item)"
@@ -93,7 +93,7 @@
 			</div>
 			
 			<reader-item-book
-				v-for="(item, index) in bookList"
+				v-for="(item, index) in endBooks"
 			  :key="index + 'book'"
 				:bookBasic="item"
 				@click="goDetail(item)"
@@ -104,6 +104,8 @@
 
 <script>
 import readerItemBook from '../../components/reader-item-book.vue'
+import { getRankBook } from '../../../../api/index.js'
+import { getBook } from '../../../../utils/bookUtil.js'
 export default {
 	components: {
 		readerItemBook
@@ -111,30 +113,59 @@ export default {
 	
 	data () {
 		return {
-			bookList: [
-				{
-					bookName: '红楼梦',
-					bookAuthor: '曹雪芹',
-					bookType: '古典文学',
-					bookRate: '9.1',
-					bookDesc: '红楼梦大观园，贾宝玉、林黛玉、薛宝钗等人之间的故事。',
-					bookImg: require('../../../../assets/img/wgsd.jpg')
-				}, {
-					bookName: '红楼梦',
-					bookAuthor: '曹雪芹',
-					bookType: '古典文学',
-					bookRate: '9.1',
-					bookDesc: '红楼梦大观园，贾宝玉、林黛玉、薛宝钗等人之间的故事。',
-					bookImg: require('../../../../assets/img/wgsd.jpg')
-				}
-			]
+			likeBooks: [], // 猜你喜欢列表
+			maleHots: [], // 男频热榜
+			femaleHots: [], // 女频热榜
+			newBooks: [], // 新书榜
+			endBooks: [], // 完结榜
 		}
 	},
 	
+	mounted () {
+		this.getYouLike() // 猜你喜欢
+		this.getMailHots() // 男频热榜
+		this.getFemaleHots() // 女频热榜
+		this.getNewBooks() // 新书榜
+		this.getEndBooks() // 完结榜
+	},
+	
 	methods: {
+		getYouLike () { // 猜你喜欢，默认起点月票榜
+			getRankBook('54d4306c321052167dfb75e4').then(res => {
+				this.likeBooks = res.ranking.books.slice(0, 4).map(getBook)
+			})
+		},
+		
+		getMailHots () { // 男频热榜，默认追书最热榜 Top100
+			getRankBook('564d8494fe996c25652644d2').then(res => {
+				this.maleHots = res.ranking.books.slice(0, 4).map(getBook)
+			})
+		},
+		
+		getFemaleHots () { // 女频热榜，默认追书最热榜 Top100
+			getRankBook('564d85b6dd2bd1ec660ea8e2').then(res => {
+				this.femaleHots = res.ranking.books.slice(0, 4).map(getBook)
+			})
+		},
+		
+		getNewBooks () { // 新书榜，默认新书榜
+			getRankBook('5a39ca3ffc84c2b8ef82da82').then(res => {
+				this.newBooks = res.ranking.books.slice(0, 4).map(getBook)
+			})
+		},
+		
+		getEndBooks () { // 完结榜，默认完结榜
+			getRankBook('564eea0b731ade4d6c509493').then(res => {
+				this.endBooks = res.ranking.books.slice(0, 4).map(getBook)
+			})
+		},
+		
 		goDetail(item) {
 			this.$router.push({
-				path: '/book/bookRelate/detail'
+				path: '/book/bookRelate/detail',
+				query: {
+					bookId: item.bookId
+				}
 			})
 		}
 	}

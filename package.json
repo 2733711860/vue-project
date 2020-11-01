@@ -13,8 +13,9 @@
   "dependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "babel-plugin-import": "^1.12.2",
-    "core-js": "^2.6.5",
+    "core-js": "^2.6.11",
     "css-loader": "^3.2.0",
+    "moment": "^2.29.1",
     "style-loader": "^1.0.0",
     "vue": "^2.6.10",
     "vue-navigation": "^1.1.4",

@@ -5,8 +5,6 @@ export default {
   title: 'demo',
 
   baseUrl: {  //
-//		dev: 'http://localhost:3001/api',
-//  dev: 'http://121.41.79.10',
     dev: 'https://api.mtnhao.com',
     tes: 'https://api.mtnhao.com',
     pro: 'https://api.mtnhao.com'

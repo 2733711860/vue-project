@@ -8,7 +8,7 @@
 				<div class="book-title">{{bookDetail.bookName}}</div>
 				<div class="book-author">作者：{{bookDetail.bookAuthor}}</div>
 				<div class="book-type">类型：{{bookDetail.bookType}}</div>
-				<div class="book-type">224.22万字  |  完结</div>
+				<div class="book-type">{{bookDetail.wordCount}}  |  {{bookDetail.isSerial ? '连载' : '完结'}}</div>
 			</div>
 		</div>
 		
@@ -28,11 +28,22 @@
 		</div>
 		
 		<div class="chapter-msg">
-			<span class="chapter-title">查看目录</span>
+			<span class="chapter-title" @click="getChapter">查看目录</span>
 			<span class="newest">
-				<span class="chapter-name">最新：第三千九百一十三章  终局终局终局终局</span>
-				<span class="chapter-btn">已完结<van-icon name="arrow" /></span>
+				<span class="chapter-name">最新：{{bookDetail.lastChapter}}</span>
+				<span class="chapter-btn">{{bookDetail.updatedTime}}<van-icon name="arrow" /></span>
 			</span>
+		</div>
+		
+		<div class="chapter-msg-two">
+			<div class="book-rate">
+				<div>读者留存率</div>
+				<div class="book-rate-value">{{bookDetail.retentionRatio}}%</div>
+			</div>
+			<div class="book-rate">
+				<div>评分（{{bookDetail.bookRate ? bookDetail.bookRate.tip : ''}}）</div>
+				<div class="book-rate-value">{{bookDetail.bookRate ? bookDetail.bookRate.score : ''}}</div>
+			</div>
 		</div>
 		
 		<div class="like-div">
@@ -103,6 +114,9 @@
 import readerHeaderTwo from '../../components/reader-header-two.vue'
 import readerItemBookTwo from '../../components/reader-item-book-two.vue'
 import readerComment from '../../components/reader-comment.vue'
+import { getBookDetail, getBookSource } from '../../../../api/index.js'
+import { getBook } from '../../../../utils/bookUtil.js'
+import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
 export default {
 	components: {
@@ -119,19 +133,35 @@ export default {
 			scrollTopValue: -1, // 滚动距顶部的距离
 			title: '书籍信息',
 			showAll: false, // 简介是否显示全部
-			
-			bookDetail: {
-				bookName: '红楼梦',
-				bookAuthor: '曹雪芹',
-				bookType: '古典文学',
-				bookRate: '9.1',
-				bookDesc: '小说以贾、史、王、薛四大家族的兴衰为背景，以富贵公子贾宝玉为视角，以贾宝玉与林黛玉、薛宝钗的爱情婚姻悲剧为主线，描绘了一批举止见识出于须眉之上的闺阁佳人的人生百态，展现了真正的人性美和悲剧美，可以说是一部从各个角度展现女性美以及中国古代社会世态百相的史诗性著作。',
-				bookImg: require('../../../../assets/img/wgsd.jpg')
-			}
+			bookDetail: {}
 		}
 	},
 	
+	created () {
+		this.getDetail()
+	},
+	
 	methods: {
+		getDetail () { // 获取书籍详情
+			getBookDetail(this.$route.query.bookId).then(res => {
+				let bookMsg = getBook(res)
+				bookMsg.updatedTime = moment(bookMsg.updatedTime).format('YYYY年MM月DD日 HH:mm:ss')
+				this.getBookSources(bookMsg)
+			})
+		},
+		
+		getBookSources (bookMsg) { // 获取小说源
+			getBookSource(this.$route.query.bookId).then(res => {
+				bookMsg.bookId = res[0]._id
+				this.bookDetail = bookMsg
+				this.$store.dispatch('setBookSourceId', bookMsg.bookId)
+			})
+		},
+		
+		getChapter () { // 获取目录
+			this.$store.dispatch('setIsShowMenu', true)
+		},
+		
 		onScrollChange ($event) { // 监听页面滚动
 			this.scrollTopValue = $event.target.scrollTop
 			let opacity = this.scrollTopValue / ANCHOR_SCROLL_TOP
@@ -236,6 +266,28 @@ export default {
 		-webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
 		-webkit-line-clamp: 3; /**显示的行数**/
 		overflow: hidden; /**隐藏超出的内容**/
+	}
+	
+	.chapter-msg-two{
+		font-size: 12px;
+		margin-top: 10px;
+		padding: 10px;
+		background-color: #FFFFFF;
+		display: flex;
+		.book-rate:first-child{
+			border-right: 1px solid #b3b3b3;
+		}
+		.book-rate{
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.book-rate-value{
+				font-size: 15px;
+				margin-top: 7px;
+				color: #000000;
+			}
+		}
 	}
 	
 	.chapter-msg{

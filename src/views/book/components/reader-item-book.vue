@@ -3,7 +3,7 @@
 		<img class="module-book-pic" :src="bookBasic.bookImg" />
 		<div class="module-book-content">
 			<h1>{{bookBasic.bookName}}</h1>
-			<div>{{bookBasic.bookDesc}}</div>
+			<div class="desc" v-html="bookBasic.bookDesc"></div>
 			<div class="module-book-content-bot">
 				<div>作者：{{bookBasic.bookAuthor}}</div>
 				<div class="book-tag">
@@ -42,10 +42,18 @@ export default {
 			border-radius: 3px;
 		}
 		.module-book-content{
+			flex: 1;
 			padding-left: 10px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
+			.desc{
+				word-break: break-all;
+				display: -webkit-box; /**对象作为伸缩盒子模型展示**/
+				-webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
+				-webkit-line-clamp: 2; /**显示的行数**/
+				overflow: hidden; /**隐藏超出的内容**/
+			}
 			h1{
 				color: #363636;
 				margin-bottom: 13px;
