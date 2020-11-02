@@ -52,7 +52,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+	@import url("./assets/style/index.less");
 	*{
 		padding: 0;
 		margin: 0;

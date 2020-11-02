@@ -154,7 +154,7 @@ export default {
 			getBookSource(this.$route.query.bookId).then(res => {
 				bookMsg.bookId = res[0]._id
 				this.bookDetail = bookMsg
-				this.$store.dispatch('setBookSourceId', bookMsg.bookId)
+				this.$store.dispatch('setBookSource', {bookSourceId: bookMsg.bookId, bookSourceName: bookMsg.bookName})
 			})
 		},
 		
@@ -217,7 +217,7 @@ export default {
 		background-size: 100% 100%;
 		display: flex;
 		padding: 50px 10px 10px;
-		color: #ffffff;
+		color: #FFFFFF;
 		img{
 			width: 100px;
 			height: 120px;
@@ -285,7 +285,6 @@ export default {
 			.book-rate-value{
 				font-size: 15px;
 				margin-top: 7px;
-				color: #000000;
 			}
 		}
 	}
@@ -338,7 +337,7 @@ export default {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			border-bottom: 1px solid #EDEDED;
+			border-bottom: 1px solid #EFEDEF;
 			.module-top-left, .module-top-right{
 				display: flex;
 				align-items: center;
@@ -353,7 +352,6 @@ export default {
 					background-color: #1989fa;
 				}
 				div{
-					color: #000000;
 					font-weight: 550;
 				}
 			}

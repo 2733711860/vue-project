@@ -202,7 +202,7 @@ export default {
 				}
 			}
 			.module-top-right{
-				color: #7b7c7d;
+				color: #999999;
 				font-size: 12px;
 			}
 		}

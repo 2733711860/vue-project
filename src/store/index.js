@@ -20,7 +20,8 @@ export default new Vuex.Store({
 		reducer(val) {
 			return {
 				cats: val.cats,
-				ranks: val.ranks
+				ranks: val.ranks,
+				historyList: val.historyList
 			}
 		}
 	})]

@@ -30,3 +30,7 @@ export const getChapters = (sourceId) => get(`/api/atoc/${sourceId}?view=chapter
 export const getChapterContent = (link) => get(`/content/chapter/${link}`) // 获取小说章节内容
 
 export const search = (query) => get(`/api/book/fuzzy-search?query=${query}`) // 模糊搜索
+
+export const getHotWords = () => get(`/api/book/search-hotwords`) // 获取搜索热词
+
+export const autoComplete = (query) => get(`/api/book/auto-complete?query=${query}`) // 搜索自动补充

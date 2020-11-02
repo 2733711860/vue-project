@@ -61,7 +61,8 @@ export default [
 						  require(['@/views/book/bookRelate/children/detail.vue'], resolve)
 						},
 						meta: {
-							title: '书名'
+							title: '书名',
+							keepAlive: true
 						}
 					}, {
 						path: '/book/bookRelate/bookTxt',
@@ -111,7 +112,8 @@ export default [
 		    },
 		    meta: {
 		    	title: '搜索',
-					showTop: true
+					showTop: false,
+					keepAlive: true
 		    }
 	    }
     ]

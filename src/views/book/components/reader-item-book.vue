@@ -59,7 +59,7 @@ export default {
 				margin-bottom: 13px;
 			}
 			div{
-				color: #949494;
+				color: #999999;
 				font-size: 12px;
 				line-height: 15px;
 			}

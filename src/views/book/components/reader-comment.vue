@@ -48,7 +48,7 @@
 			justify-content: space-between;
 			align-items: center;
 			font-size: 12px;
-			color: #969596;
+			color: #999999;
 			margin-top: 15px;
 			.bottm-btn{
 				display: flex;

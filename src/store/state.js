@@ -2,7 +2,12 @@ const state = {
 	isShowMenu: false, // 是否显示侧边目录
 	cats: null, // 书籍所有类别
 	ranks: null, // 排行榜类型
-	bookSourceId: null // 当前小说源id
+	bookSource: { // 当前小说源
+		bookSourceId: null,
+		bookSourceName: null
+	},
+	historyList: [], // 搜索历史
+	keepAliveList: ['/book/bookRelate/detail', '/book/search']
 }
 
 export default state
