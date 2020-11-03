@@ -63,24 +63,7 @@ export default {
 		getSearch (value) { // 搜索接口
 			this.$store.dispatch('setHistory', value) // 保存搜索历史
 			search(value == '' ? '圣墟' : value).then(res => {
-				let books = [
-					{
-						"_id":"5816b415b06d1d32157790b1",
-						"title":"圣墟",
-						"author":"辰东",
-						"cover":"/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_f4dc55cf31b14ea1a28bb4dacd79f463.jpg%2F",
-						"shortIntro":"在破败中崛起，在寂灭中复苏。\n沧海成尘，雷电枯竭，那一缕幽雾又一次临近大地，世间的枷锁被打开了，一个全新的世界就此揭开神秘的一角……",
-						"majorCate":"玄幻",
-						"minorCate":"东方玄幻",
-						"site":"zhuishuvip",
-						"allowMonthly":false,
-						"banned":0,
-						"latelyFollower":994,
-						"retentionRatio":
-						"10.82"
-					}
-				]
-				this.searchResult = books.map(getBook)
+				this.searchResult = res.books.map(getBook)
 			})
 		},
 		

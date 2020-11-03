@@ -37,7 +37,7 @@ axios.interceptors.response.use(
  */
 
 export function get(url,params={}){
-	url = 'https://www.fastmock.site/mock/0372cb2d6c9fb363b21c2faa1cf62e54' + url
+	// url = 'https://www.fastmock.site/mock/0372cb2d6c9fb363b21c2faa1cf62e54' + url
   return new Promise((resolve,reject) => {
     axios.get(url, { params:params }, config)
 	    .then(response => {

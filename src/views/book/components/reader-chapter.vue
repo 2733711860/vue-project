@@ -17,16 +17,11 @@
 </template>
 
 <script>
-import { getChapters, getChapterContent } from '../../../api/index.js'
-import { Book } from '../../../utils/bookUtil.js'
+import { getChapters } from '../../../api/index.js'
 export default {
 	data () {
 		return {
 			chapters: [],
-			bookContent: {
-			  title: '',
-			  content: ''
-			},
 		}
 	},
 	
@@ -39,9 +34,6 @@ export default {
 	watch: {
 		bookSource () {
 			this.getChapter()
-		},
-		chapters () {
-			console.log('章节变了')
 		}
 	},
 	
@@ -56,39 +48,14 @@ export default {
 		},
 		
 		getContent (item) { // 获取每章内容
-			getChapterContent(encodeURIComponent(item.link)).then(res => {
-				if (res.ok) {
-				  if (res.chapter.cpContent) {
-				    this.bookContent = this._nromalBook(res.chapter.title, res.chapter.cpContent)
-						console.log(this.bookContent)
-				  } else {
-				    this.bookContent = this._nromalBook(res.chapter.title, res.chapter.body)
-				  }
+			this.closeChapter()
+			this.$router.push({
+				path: '/book/bookRelate/bookTxt',
+				query: {
+					link: item.link,
+					bookSourceId: this.bookSource.bookSourceId
 				}
 			})
-		},
-		
-		_nromalBook (title, content) { // 构建book类
-			let _this = this
-		  let book = new Book({
-		    title: title,
-		    content: _this.bookChaptersBody(content)
-		  });
-		  return book
-		},
-		
-		bookChaptersBody (books) { // 字符串解析
-		  if (books) {
-		    let c = /[\u4E00-\u9FA5\uF900-\uFA2D]/g
-		    let _book = JSON.stringify(books).replace(/^"|"$/g, '')
-		    this.loading = false
-		    if (c.test(_book)) {
-		      _book = '<p>' + _book.replace(/\s*/g, '').replace(/\\n/g, '</p><p>') + '</p>'
-		      return _book
-		    } else {
-		      return 'vip章节，请购买或者换源阅读！' // 换源功能已经实现
-		    }
-		  }
 		},
 		
 		closeChapter () { // 关闭章节弹窗

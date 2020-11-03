@@ -17,8 +17,8 @@ export function getBook (book) {
 		bookId: book._id,
 		bookName: book.title,
 		bookAuthor: book.author,
-		bookType: book.majorCate + ',' + book.minorCate,
-		bookRate: book.rating ? book.rating : {}, // 评分
+		bookType: book.cat ? book.cat : (book.majorCate + ',' + book.minorCate),
+		bookRate: book.rating ? book.rating : '6.0', // 评分
 		bookDesc: book.shortIntro ? book.shortIntro : book.longIntro, // 简介
 		latelyFollower: book.latelyFollower, // 人气
 		retentionRatio: book.retentionRatio, // 留存率
@@ -51,4 +51,25 @@ export class Book {
     this.title = title;
     this.content = content;
   }
+}
+
+export function bookChaptersBody (books) { // 字符串解析
+	if (books) {
+		let c = /[\u4E00-\u9FA5\uF900-\uFA2D]/g
+		let _book = JSON.stringify(books).replace(/^"|"$/g, '')
+		if (c.test(_book)) {
+			_book = '<p>' + _book.replace(/\s*/g, '').replace(/\\n/g, '</p><p>').replace(/\\r/g, '') + '</p>'
+			return _book
+		} else {
+			return 'vip章节，请购买或者换源阅读！' // 换源功能已经实现
+		}
+	}
+}
+
+export function _nromalBook (title, content) { // 构建book类
+	let book = new Book({
+		title: title,
+		content: bookChaptersBody(content)
+	});
+	return book
 }
