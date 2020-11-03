@@ -25,6 +25,11 @@ const mutations = {
 	[types.SET_HISTORYLIST](state, historyList) {
 	  state.historyList = historyList
 	},
+	
+	// 搜索历史
+	[types.SET_KEEPALIVELIST](state, keepAliveList) {
+	  state.keepAliveList = keepAliveList
+	},
 }
 
 export default mutations

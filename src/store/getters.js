@@ -7,3 +7,5 @@ export const ranks = state => state.ranks // 排行榜类型
 export const bookSource = state => state.bookSource // 当前小说源
 
 export const historyList = state => state.historyList // 搜索历史
+
+export const keepAliveList = state => state.keepAliveList // 搜索历史

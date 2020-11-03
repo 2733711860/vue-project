@@ -7,3 +7,5 @@ export const SET_RANKS = 'SET_RANKS' // 排行榜类型
 export const SET_BOOKSOURCE = 'SET_BOOKSOURCE' // 当前小说源
 
 export const SET_HISTORYLIST = 'SET_HISTORYLIST' // 搜索历史
+
+export const SET_KEEPALIVELIST = 'SET_KEEPALIVELIST' // 搜索历史

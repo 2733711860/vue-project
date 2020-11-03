@@ -31,13 +31,10 @@ import readerHotSearch from '../components/reader-hot-search.vue'
 import readerItemBook from '../components/reader-item-book.vue'
 import { search, getHotWords } from '../../../api/index.js'
 import { getBook } from '../../../utils/bookUtil.js'
-import {mixin} from '../../../mixin/keepAlive.js'
 export default {
 	components: {
 		readerSearch, readerHotSearch, readerItemBook
 	},
-	
-	mixins:[mixin],
 	
 	data () {
 		return {

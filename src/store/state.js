@@ -7,7 +7,7 @@ const state = {
 		bookSourceName: null
 	},
 	historyList: [], // 搜索历史
-	keepAliveList: ['/book/bookRelate/detail', '/book/search']
+	keepAliveList: ['book/bookRelate/detail', 'book/search']
 }
 
 export default state

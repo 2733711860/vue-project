@@ -23,7 +23,8 @@ export default [
 						},
 						meta: {
 							title: '书城',
-							showTop: true
+							showTop: true,
+							rank: 1
 						}
 					}, {
 						path: '/book/home/rank',
@@ -33,7 +34,8 @@ export default [
 						},
 						meta: {
 							title: '榜单',
-							showTop: true
+							showTop: true,
+							rank: 1
 						}
 					}, {
 						path: '/book/home/classify',
@@ -43,7 +45,8 @@ export default [
 						},
 						meta: {
 							title: '分类',
-							showTop: true
+							showTop: true,
+							rank: 1
 						}
 					}
 				]
@@ -62,7 +65,8 @@ export default [
 						},
 						meta: {
 							title: '书名',
-							keepAlive: true
+							keepAlive: true,
+							rank: 3
 						}
 					}, {
 						path: '/book/bookRelate/bookTxt',
@@ -71,16 +75,8 @@ export default [
 						  require(['@/views/book/bookRelate/children/bookTxt.vue'], resolve)
 						},
 						meta: {
-							title: '书籍文本'
-						}
-					}, {
-						path: '/book/bookRelate/chapter',
-						name: 'book/bookRelate/chapter',
-						component: resolve => {
-						  require(['@/views/book/bookRelate/children/chapter.vue'], resolve)
-						},
-						meta: {
-							title: '章节'
+							title: '书籍文本',
+							rank: 4
 						}
 					}
 				]
@@ -92,7 +88,8 @@ export default [
 		    },
 		    meta: {
 		    	title: '我的',
-					showTop: true
+					showTop: true,
+					rank: 1
 		    }
 	    }, {
 	      path: '/book/shelf',
@@ -102,7 +99,8 @@ export default [
 		    },
 		    meta: {
 		    	title: '书架',
-					showTop: true
+					showTop: true,
+					rank: 1
 		    }
 	    }, {
 	      path: '/book/search',
@@ -113,7 +111,8 @@ export default [
 		    meta: {
 		    	title: '搜索',
 					showTop: false,
-					keepAlive: true
+					keepAlive: true,
+					rank: 2
 		    }
 	    }
     ]
