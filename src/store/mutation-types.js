@@ -9,3 +9,5 @@ export const SET_BOOKSOURCE = 'SET_BOOKSOURCE' // 当前小说源
 export const SET_HISTORYLIST = 'SET_HISTORYLIST' // 搜索历史
 
 export const SET_KEEPALIVELIST = 'SET_KEEPALIVELIST' // 搜索历史
+
+export const SET_CACHEBOOKS = 'SET_CACHEBOOKS' // 已缓存书籍列表

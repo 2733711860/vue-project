@@ -9,3 +9,5 @@ export const bookSource = state => state.bookSource // 当前小说源
 export const historyList = state => state.historyList // 搜索历史
 
 export const keepAliveList = state => state.keepAliveList // 搜索历史
+
+export const cacheBooks = state => state.cacheBooks // 已缓存书籍列表

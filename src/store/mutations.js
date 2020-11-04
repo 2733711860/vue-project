@@ -30,6 +30,11 @@ const mutations = {
 	[types.SET_KEEPALIVELIST](state, keepAliveList) {
 	  state.keepAliveList = keepAliveList
 	},
+	
+	// 已缓存书籍列表
+	[types.SET_CACHEBOOKS](state, cacheBooks) {
+	  state.cacheBooks = cacheBooks
+	},
 }
 
 export default mutations

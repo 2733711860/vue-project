@@ -154,7 +154,16 @@ export default {
 			getBookSource(this.$route.query.bookId).then(res => {
 				bookMsg.bookId = res[0]._id
 				this.bookDetail = bookMsg
-				this.$store.dispatch('setBookSource', {bookSourceId: bookMsg.bookId, bookSourceName: bookMsg.bookName})
+				this.$store.dispatch('setBookSource', {
+					bookSourceId: bookMsg.bookId, 
+					bookSourceName: bookMsg.bookName
+				})
+				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
+					bookId: this.$route.query.bookId,
+					bookSourceId: bookMsg.bookId,
+					bookName: bookMsg.bookName,
+					bookImg: bookMsg.bookImg
+				})
 			})
 		},
 		

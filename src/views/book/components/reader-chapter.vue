@@ -6,7 +6,7 @@
 				<div class="chapter-reserve"><van-icon name="exchange" /></div>
 			</div>
 			<div class="chapter-div">
-				<div class="item-chapter" v-for="(item, index) in chapters" :key="index + 'chapter'" @click="getContent(item)">{{item.title}}</div>
+				<div class="item-chapter" v-for="(item, index) in chapters" :key="index + 'chapter'" @click="getContent(item, index)">{{item.title}}</div>
 			</div>
 		</div>
 		
@@ -26,6 +26,9 @@ export default {
 	},
 	
 	computed: {
+		cacheBooks () {
+			return this.$store.getters.cacheBooks
+		},
 		bookSource () {
 			return this.$store.getters.bookSource
 		}
@@ -42,17 +45,29 @@ export default {
 	
 	methods: {
 		getChapter () { // 获取章节
-			getChapters(this.bookSource.bookSourceId).then(res => {
-				this.chapters = res.chapters
-			})
+			let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.bookSource.bookSourceId && item.chapters && item.chapters.length > 0)
+			if (thisBook) {
+				this.chapters = thisBook.chapters
+			} else {
+				getChapters(this.bookSource.bookSourceId).then(res => {
+					this.chapters = res.chapters
+					this.$store.dispatch('setCacheBooks', { // 保存目录
+						chapters: this.chapters,
+						bookSourceId: this.bookSource.bookSourceId
+					})
+				})
+			}
 		},
 		
-		getContent (item) { // 获取每章内容
+		getContent (item, index) { // 获取每章内容
+			this.$store.dispatch('setCacheBooks', { // 保存当前章节索引
+				chapters: this.chapters,
+				currentChapterIndex: index
+			})
 			this.closeChapter()
 			this.$router.push({
 				path: '/book/bookRelate/bookTxt',
 				query: {
-					link: item.link,
 					bookSourceId: this.bookSource.bookSourceId
 				}
 			})

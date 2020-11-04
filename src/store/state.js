@@ -7,6 +7,7 @@ const state = {
 		bookSourceName: null
 	},
 	historyList: [], // 搜索历史
+	cacheBooks: [], // 已缓存书籍列表
 	keepAliveList: ['book/bookRelate/detail', 'book/search']
 }
 

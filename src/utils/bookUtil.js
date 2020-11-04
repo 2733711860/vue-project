@@ -73,3 +73,26 @@ export function _nromalBook (title, content) { // 构建book类
 	});
 	return book
 }
+
+export function get_cache_size (t) { // 获取localStorage或者sessionStorage已缓存的大小
+	var storageSize = '' // 缓存大小
+	t = t == undefined ? "l" : t
+	var obj = ""
+	if (t === 'l') {
+		obj = window.localStorage
+	} else {
+		obj = window.sessionStorage
+	}
+	if (obj !== "") {
+		var size = 0
+		for (var item in obj) {
+			if (obj.hasOwnProperty(item)) {
+				size += obj.getItem(item).length
+			}
+		}
+		storageSize = (size / 1024).toFixed(2) + 'KB'
+	} else {
+		storageSize = '0KB'
+	}
+	return storageSize
+}
