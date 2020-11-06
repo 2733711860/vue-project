@@ -17,8 +17,8 @@ const mutations = {
 	},
 	
 	// 当前小说源Id
-	[types.SET_BOOKSOURCE](state, bookSource) {
-	  state.bookSource = bookSource
+	[types.SET_BOOKSOURCEID](state, bookSourceId) {
+	  state.bookSourceId = bookSourceId
 	},
 	
 	// 搜索历史

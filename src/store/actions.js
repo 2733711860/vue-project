@@ -16,8 +16,8 @@ export const setRanks = function({ commit }, ranks) {
 }
 
 // 当前小说源Id
-export const setBookSource = function({ commit }, bookSource) {
-  commit(types.SET_BOOKSOURCE, bookSource)
+export const setBookSourceId = function({ commit }, bookSourceId) {
+  commit(types.SET_BOOKSOURCEID, bookSourceId)
 }
 
 // 搜索历史
@@ -52,7 +52,7 @@ export const setCacheBooks = function({ commit, state }, books) {
 			updatedTime: books.updatedTime ? books.updatedTime : '', // 最近更新时间
 			lastChapter: books.lastChapter ? books.lastChapter : '', // 最新章节
 			isOnShelf: books.isOnShelf ? books.isOnShelf : '0', // 0:未放入书架，1:已放入
-			chapters: [],
+			chapters: books.chapters ? books.chapters : [],
 			currentChapterIndex: 0,
 			hasReadChapterList: []
 		}
@@ -110,8 +110,16 @@ export const deleteCasheBooks = ({ commit, state }, bookSourceId) => {
 // ]
 
 // 页面设置信息
-export const setSetting = function({ commit }, setting) {
-  commit(types.SET_SETTING, setting)
+export const setSetting = function({ commit, state }, settings) {
+	let copySetting = state.setting // 拷贝一份
+	copySetting.brightness = settings.brightness ? settings.brightness : copySetting.brightness
+	copySetting.fontSize = settings.fontSize ? settings.fontSize : copySetting.fontSize
+	copySetting.lineHeight = settings.lineHeight ? settings.lineHeight : copySetting.lineHeight
+	copySetting.turnPageMode = settings.turnPageMode ? settings.turnPageMode : copySetting.turnPageMode
+	copySetting.backgroundColor = settings.backgroundColor ? settings.backgroundColor : copySetting.backgroundColor
+	copySetting.dayNight = settings.dayNight ? settings.dayNight : copySetting.dayNight
+	copySetting.bookSource = settings.bookSource ? settings.bookSource : copySetting.bookSource
+  commit(types.SET_SETTING, copySetting)
 }
 
 // setting{
