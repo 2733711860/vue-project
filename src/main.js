@@ -30,6 +30,9 @@ VueTouch.config.swipe = {
 
 Vue.config.productionTip = false;
 
+import Loading from './components/me-loading'
+Vue.use(Loading)
+
 new Vue({
   store,
   router,
