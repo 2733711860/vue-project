@@ -8,7 +8,8 @@ const state = {
 	},
 	historyList: [], // 搜索历史
 	cacheBooks: [], // 已缓存书籍列表
-	keepAliveList: ['book/bookRelate/detail', 'book/search']
+	setting: {}, // 页面设置信息
+	keepAliveList: ['book/bookRelate/detail', 'book/search'],
 }
 
 export default state

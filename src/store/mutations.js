@@ -35,6 +35,11 @@ const mutations = {
 	[types.SET_CACHEBOOKS](state, cacheBooks) {
 	  state.cacheBooks = cacheBooks
 	},
+	
+	// 页面设置信息
+	[types.SET_SETTING](state, setting) {
+	  state.setting = setting
+	},
 }
 
 export default mutations

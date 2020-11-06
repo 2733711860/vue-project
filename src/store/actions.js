@@ -108,3 +108,18 @@ export const deleteCasheBooks = ({ commit, state }, bookSourceId) => {
 // 		}
 // 	}
 // ]
+
+// 页面设置信息
+export const setSetting = function({ commit }, setting) {
+  commit(types.SET_SETTING, setting)
+}
+
+// setting{
+// 	dayNight: 'day', // day:日间模式  night:夜间模式,
+// 	bookSource: '', // 当前小说源(换源)
+// 	light: 1, // 亮度
+// 	fontSize: 14, // 字体大小
+// 	tightness: '4', // 1:紧凑  2:舒适  3:松散  4:默认
+// 	turnPageMode: '3', // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
+// 	readBg: 'rgb(238, 230, 221)' // 阅读背景颜色
+// }
