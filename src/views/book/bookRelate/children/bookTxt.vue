@@ -39,8 +39,12 @@
 			:currentPaging="currentPaging"
 			@prevChapter="prevChapter"
 			@nextChapter="nextChapter"
-			@openSetting="openSetting"></reader-tool-page-bottom>
+			@openSetting="openSetting"
+			@openDownload="openDownload"
+			@openMenu="openMenu"></reader-tool-page-bottom>
 		<reader-setting v-model="showSetting"></reader-setting>
+		<readerDownload v-model="showDownload"></readerDownload>
+		<reader-chapter-two v-model="showMenu"></reader-chapter-two>
 	</div>
 </template>
 
@@ -52,9 +56,11 @@ import { Toast, Dialog } from 'vant'
 import readerToolPageTop from '../../components/reader-tool-page-top.vue'
 import readerToolPageBottom from '../../components/reader-tool-page-bottom.vue'
 import readerSetting from '../../components/reader-setting.vue'
+import readerDownload from '../../components/reader-download.vue'
+import readerChapterTwo from '../../components/reader-chapter-two.vue'
 export default {
 	components: {
-		readerToolPageTop, readerToolPageBottom, readerSetting
+		readerToolPageTop, readerToolPageBottom, readerSetting, readerDownload, readerChapterTwo
 	},
 	
 	data () {
@@ -73,7 +79,9 @@ export default {
 			currentIndex: 0, // 当前章节索引
 			isPrevChapter: false, // 是否上一章
 			showTool: false, // 是否显示工具栏
-			showSetting: false
+			showSetting: false, // 是否显示设置页
+			showDownload: false, // 是否显示下载页面
+			showMenu: false, // 是否显示目录
 		}
 	},
 	
@@ -205,7 +213,11 @@ export default {
 						this.prevChapter()
 					}
 				} else if (offsetX <= currentX && currentX <= offsetX * 2) { // 用户点击中间1/3，弹出选择框
-					this.showTool = !this.showTool
+					if (this.showSetting) {
+						this.showSetting = false
+					} else {
+						this.showTool = !this.showTool
+					}
 				} else { // 用户点击右边1/3，下一章
 					if (this.resultPaging == this.currentPaging) { // 最后一页
 						this.nextChapter()
@@ -286,6 +298,16 @@ export default {
 		openSetting () { // 打开设置
 			this.showTool = false
 			this.showSetting = true
+		},
+		
+		openDownload () { // 打开下载页面
+			this.showTool = false
+			this.showDownload = true
+		},
+		
+		openMenu () { // 打开目录
+			this.showTool = false
+			this.showMenu = true
 		}
 	},
 	
@@ -320,6 +342,7 @@ export default {
 		position: relative;
 		background-color: rgba(238, 230, 221, 1);
 		filter: brightness(1); // 设置亮度 // $(".div").css('filter','brightness('+temp+')');
+		overflow-y: hidden;
 	}
 	.content-page{
 		overflow-y: auto;

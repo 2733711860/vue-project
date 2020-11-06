@@ -17,7 +17,7 @@
 		</div>
 		
 		<div class="tool-btn-div">
-			<div class="item-tool">
+			<div class="item-tool" @click="openMenu">
 				<i class="iconfont mulu icon1"></i>
 				<div>目录</div>
 			</div>
@@ -25,7 +25,7 @@
 				<i class="iconfont yejian icon"></i>
 				<div>夜间</div>
 			</div>
-			<div class="item-tool">
+			<div class="item-tool" @click="openDownload">
 				<i class="iconfont download icon"></i>
 				<div>缓存</div>
 			</div>
@@ -92,6 +92,14 @@ export default {
 		
 		openSetting () { // 设置
 			this.$emit('openSetting')
+		},
+		
+		openDownload () { // 下载
+			this.$emit('openDownload')
+		},
+		
+		openMenu () { // 目录
+			this.$emit('openMenu')
 		}
 	}
 }
