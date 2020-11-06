@@ -49,6 +49,8 @@ export const setCacheBooks = function({ commit, state }, books) {
 			bookSourceId: books.bookSourceId,
 			bookName: books.bookName,
 			bookImg: books.bookImg,
+			updatedTime: books.updatedTime ? books.updatedTime : '', // 最近更新时间
+			lastChapter: books.lastChapter ? books.lastChapter : '', // 最新章节
 			isOnShelf: books.isOnShelf ? books.isOnShelf : '0', // 0:未放入书架，1:已放入
 			chapters: [],
 			currentChapterIndex: 0,
@@ -56,20 +58,34 @@ export const setCacheBooks = function({ commit, state }, books) {
 		}
 		copyBooks.push(thisBook)
 	} else {
-		console.log('有本书')
-		if (books.newReadChapter) { // 如果是缓存章节
-			thisBook.hasReadChapterList.push(books.newReadChapter)
-		}
-		thisBook.bookId = books.bookId ? books.bookId : thisBook.bookId
-		thisBook.bookSourceId = books.bookSourceId ? books.bookSourceId : thisBook.bookSourceId
-		thisBook.bookName = books.bookName ? books.bookName : thisBook.bookName
-		thisBook.bookImg = books.bookImg ? books.bookImg : thisBook.bookImg
-		thisBook.isOnShelf = books.isOnShelf ? books.isOnShelf : thisBook.isOnShelf
-		thisBook.chapters = books.chapters ? books.chapters : thisBook.chapters
-		thisBook.currentChapterIndex = books.currentChapterIndex ? books.currentChapterIndex : thisBook.currentChapterIndex
-		let thisIndex = copyBooks.findIndex(item => item.bookSourceId = books.bookSourceId)
-		copyBooks.splice(thisIndex, 1, thisBook) // 删除之前的，并把现在的插入进去
+		copyBooks.forEach(item => {
+			if (item.bookSourceId == books.bookSourceId) {
+				if (books.newReadChapter) { // 如果是缓存章节
+					item.hasReadChapterList.push(books.newReadChapter)
+					item.hasReadChapterList.sort((a, b) => {
+						return a.chapterIndex < b.chapterIndex ? '-1' : '1'
+					})
+				}
+				item.bookId = books.bookId ? books.bookId : item.bookId
+				item.bookSourceId = books.bookSourceId ? books.bookSourceId : item.bookSourceId,
+				item.bookName = books.bookName ? books.bookName : item.bookName
+				item.bookImg = books.bookImg ? books.bookImg : item.bookImg,
+				item.updatedTime = books.updatedTime ? books.updatedTime : item.updatedTime,
+				item.lastChapter = books.lastChapter ? books.lastChapter : item.lastChapter
+				item.isOnShelf = books.isOnShelf ? books.isOnShelf : item.isOnShelf
+				item.chapters = books.chapters ? books.chapters : item.chapters
+				item.currentChapterIndex = (books.currentChapterIndex || books.currentChapterIndex == 0) ? books.currentChapterIndex : item.currentChapterIndex
+			}
+		})
 	}
+	commit(types.SET_CACHEBOOKS, copyBooks)
+}
+
+// 不加入书架，则删除当前书籍
+export const deleteCasheBooks = ({ commit, state }, bookSourceId) => {
+	let copyBooks = [...state.cacheBooks] // 拷贝一份
+	let thisIndex = copyBooks.findIndex(item => item.bookSourceId == bookSourceId) // 当前操作的书籍
+	copyBooks.splice(thisIndex, 1)
 	commit(types.SET_CACHEBOOKS, copyBooks)
 }
 
@@ -80,6 +96,8 @@ export const setCacheBooks = function({ commit, state }, books) {
 // 		bookName: '',
 // 		bookImg: '', // 书籍封面
 // 		isOnShelf: false, // 是否放入书架
+//    updatedTime: '', // 最近更新时间
+//		lastChapter: '', // 最新章节
 // 		chapters: [], // 章节列表
 // 		currentChapterIndex: -1, // 当前阅读章节索引
 // 		newReadChapter: { // 新缓存的章节

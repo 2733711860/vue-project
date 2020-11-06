@@ -1,10 +1,7 @@
 <template>
 	<div class="book-page">
 		<reader-header v-if="$route.meta.showTop"></reader-header>
-		<keep-alive v-if="$route.meta.keepAlive">
-			<router-view class="book-content"></router-view>
-		</keep-alive>
-		<router-view class="book-content" v-if="!$route.meta.keepAlive"></router-view>
+		<router-view class="book-content"></router-view>
 		<reader-footer v-if="$route.meta.showTop"></reader-footer>
 	</div>
 </template>

@@ -1,9 +1,6 @@
 <template>
 	<div>
-		<keep-alive v-if="$route.meta.keepAlive">
-			<router-view class="book-relate"></router-view>
-		</keep-alive>
-		<router-view class="book-relate" v-if="!$route.meta.keepAlive"></router-view>
+		<router-view class="book-relate"></router-view>
 	</div>
 </template>
 
