@@ -2,11 +2,11 @@
 	<div class="al-page">
 		<div class="chapter-page">
 			<div class="chapter-top">
-				<div class="book-name">{{bookSource.bookSourceName}}</div>
+				<div class="book-name">{{thisBook.bookName}}</div>
 				<div class="chapter-reserve"><van-icon name="exchange" /></div>
 			</div>
 			<div class="chapter-div">
-				<div class="item-chapter" v-for="(item, index) in chapters" :key="index + 'chapter'" @click="getContent(item, index)">{{item.title}}</div>
+				<div class="item-chapter" v-for="(item, index) in thisBook.chapters" :key="index + 'chapter'" @click="getContent(item, index)">{{item.title}}</div>
 			</div>
 		</div>
 		
@@ -19,56 +19,32 @@
 <script>
 import { getChapters } from '../../../api/index.js'
 export default {
-	data () {
-		return {
-			chapters: [],
-		}
-	},
-	
 	computed: {
-		cacheBooks () {
-			return this.$store.getters.cacheBooks
-		},
-		bookSource () {
-			return this.$store.getters.bookSource
+		thisBook () {
+			let cacheBooks = this.$store.getters.cacheBooks
+			let nowBookSourceId = this.$store.getters.bookSourceId
+			let thisBook = cacheBooks.find(item => item.bookSourceId == nowBookSourceId)
+			return thisBook ? thisBook : {}
 		}
 	},
 	
 	watch: {
-		bookSource () {
-			this.getChapter()
-		}
 	},
 	
 	mounted () {
 	},
 	
 	methods: {
-		getChapter () { // 获取章节
-			let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.bookSource.bookSourceId && item.chapters && item.chapters.length > 0)
-			if (thisBook) {
-				this.chapters = thisBook.chapters
-			} else {
-				getChapters(this.bookSource.bookSourceId).then(res => {
-					this.chapters = res.chapters
-					this.$store.dispatch('setCacheBooks', { // 保存目录
-						chapters: this.chapters,
-						bookSourceId: this.bookSource.bookSourceId
-					})
-				})
-			}
-		},
-		
 		getContent (item, index) { // 获取每章内容
 			this.$store.dispatch('setCacheBooks', { // 保存当前章节索引
 				currentChapterIndex: index,
-				bookSourceId: this.bookSource.bookSourceId
+				bookSourceId: this.thisBook.bookSourceId
 			})
 			this.closeChapter()
 			this.$router.push({
 				path: '/book/bookRelate/bookTxt',
 				query: {
-					bookSourceId: this.bookSource.bookSourceId
+					bookSourceId: this.thisBook.bookSourceId
 				}
 			})
 		},

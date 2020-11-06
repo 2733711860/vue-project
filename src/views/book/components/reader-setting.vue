@@ -5,7 +5,7 @@
 			<van-slider
 				class="slider"
 				v-model="currentBright"
-				min='0'
+				min='50'
 				max='100'
 				@change="onChange"
 			>
@@ -17,12 +17,12 @@
 		</div>
 		
 		<div class="fontSet">
-			<div class="font-btn">
+			<div class="font-btn" @click="changeFontSize('-')">
 				<i class="iconfont ziti"></i>
 				<span>-</span>
 			</div>
-			<span class="font-value">66</span>
-			<div class="font-btn">
+			<span class="font-value">{{setting.fontSize}}</span>
+			<div class="font-btn" @click="changeFontSize('+')">
 				<i class="iconfont ziti"></i>
 				<span>+</span>
 			</div>
@@ -63,12 +63,22 @@ export default {
 	data () {
 		return {
 			showS: this.value,
-			currentBright: 10
+			currentBright: 0,
+		}
+	},
+	
+	computed: {
+		setting () {
+			return this.$store.getters.setting
 		}
 	},
 	
 	props: {
 		value: false
+	},
+	
+	mounted () {
+		this.currentBright = this.setting.brightness * 100
 	},
 	
 	watch: {
@@ -81,8 +91,23 @@ export default {
 	},
 	
 	methods: {
-		onChange () {
-			
+		onChange (val) { // 切换亮度
+			this.$store.dispatch('setSetting', {
+				brightness: val/100
+			})
+		},
+		
+		changeFontSize (type) { // 切换字体大小
+			let fontsize = this.setting.fontSize
+			if (type == '-' && fontsize > 9) {
+				fontsize--
+			}
+			if (type == '+' && fontsize < 18) {
+				fontsize++
+			}
+			this.$store.dispatch('setSetting', {
+				fontSize: fontsize
+			})
 		}
 	}
 }

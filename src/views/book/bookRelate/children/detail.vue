@@ -114,7 +114,7 @@
 import readerHeaderTwo from '../../components/reader-header-two.vue'
 import readerItemBookTwo from '../../components/reader-item-book-two.vue'
 import readerComment from '../../components/reader-comment.vue'
-import { getBookDetail, getBookSource } from '../../../../api/index.js'
+import { getBookDetail, getBookSource, getChapters } from '../../../../api/index.js'
 import { getBook } from '../../../../utils/bookUtil.js'
 import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
@@ -164,18 +164,23 @@ export default {
 			getBookSource(this.$route.query.bookId).then(res => {
 				bookMsg.bookId = res[0]._id
 				this.bookDetail = bookMsg
-				this.$store.dispatch('setBookSource', {
-					bookSourceId: bookMsg.bookId, 
-					bookSourceName: bookMsg.bookName
-				})
+				this.getChapters()
+			})
+		},
+		
+		getChapters () { // 调接口获取目录
+			getChapters(this.bookDetail.bookId).then(res => {
 				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
 					bookId: this.$route.query.bookId,
-					bookSourceId: bookMsg.bookId,
-					bookName: bookMsg.bookName,
-					bookImg: bookMsg.bookImg,
-					updatedTime: bookMsg.updatedTime,
-					lastChapter: bookMsg.lastChapter
+					bookSourceId: this.bookDetail.bookId,
+					bookName: this.bookDetail.bookName,
+					bookImg: this.bookDetail.bookImg,
+					updatedTime: this.bookDetail.updatedTime,
+					lastChapter: this.bookDetail.lastChapter,
+					chapters: res.chapters
 				})
+				
+				this.$store.dispatch('setBookSourceId', this.bookDetail.bookId)
 			})
 		},
 		

@@ -1,13 +1,13 @@
 <template>
-	<div class="read-page">
+	<div class="read-page" :style="{fontSize: setting.fontSize + 'px', backgroundColor: setting.backgroundColor, filter: 'brightness(' + setting.brightness + ')'}">
 		<div ref="wrapper" class="content-page" @click="setRead($event)">
 			<!-- 整页 -->
 			<div class="book-content" ref="content" v-if="pagingPattern===0">
-			  <h1 class="book-title">{{bookContent.title}}</h1>
-			  <div class="book-inner" v-html="bookContent.content"></div>
+			  <h1 class="book-title" :style="{fontSize: (setting.fontSize + 4) + 'px'}">{{bookContent.title}}</h1>
+			  <div class="book-inner" :style="{lineHeight: setting.lineHeight + 'px'}" v-html="bookContent.content"></div>
 				<div class="book-button">
-					<div @click="prevChapter">上一章</div>
-					<div @click="nextChapter">下一章</div>
+					<div @click="prevChapter" :style="{fontSize: (setting.fontSize + 1) + 'px'}">上一章</div>
+					<div @click="nextChapter" :style="{fontSize: (setting.fontSize + 1) + 'px'}">下一章</div>
 				</div>
 			</div>
 			
@@ -19,12 +19,12 @@
 				class="read-content" 
 				v-if="pagingPattern==1 || pagingPattern==2 || pagingPattern==3"
 			>
-				<p class="book-title1" style="padding: 10px">{{bookContent.title}}</p>
+				<p class="book-title1" style="padding: 10px;">{{bookContent.title}}</p>
 				<div class="read-article" style="padding: 0 10px;">
 				  <section class="read-section" :style="styleObject">
 				    <div class="read-section-inner" :style="{columns: clWidth-20+'px', columnGap: 10+'px'}" ref="bookInner" id="bookInner">
-				      <h1 class="book-title">{{bookContent.title}}</h1>
-				      <div class="book-inner" v-html="bookContent.content"></div>
+				      <h1 class="book-title" :style="{fontSize: (setting.fontSize + 4) + 'px'}">{{bookContent.title}}</h1>
+				      <div class="book-inner" :style="{lineHeight: setting.lineHeight + 'px'}" v-html="bookContent.content"></div>
 				    </div>
 				  </section>
 				</div>
@@ -86,13 +86,18 @@ export default {
 	},
 	
 	computed: {
-		cacheBooks () {
-			return this.$store.getters.cacheBooks
+		thisBook () { // 当前书籍
+			let cacheBooks = this.$store.getters.cacheBooks
+			let nowBook = cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+			return nowBook ? nowBook : {}
+		},
+		setting () {
+			return this.$store.getters.setting
 		}
 	},
 	
 	mounted () {
-		this.getChapter()
+		this.currentIndex = this.thisBook.currentChapterIndex
 	},
 	
 	watch: {
@@ -119,31 +124,23 @@ export default {
 			}
 		},
 		currentIndex () {
-			this.$store.dispatch('setCacheBooks', { // 保存章节信息
-				bookSourceId: this.$route.query.bookSourceId,
-				currentChapterIndex: this.currentIndex
-			})
+			this.getChapterDetail()
 		}
 	},
 	
 	methods: {
-		getChapter () { // 获取章节
-			let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
-			thisBook.chapters.forEach(item => {
-				this.bookSourceLinks.push(item.link)
-			})
-			this.currentIndex = thisBook.currentChapterIndex
-			this.getContent()
-		},
-		
-		getContent () { // 获取每章内容
-			let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
-			let hasThisChapter = thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
+		getChapterDetail () { // 只要当前章节index发生变化，就获取数据
+			let hasThisChapter = this.thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
 			if (hasThisChapter) { // 如果本章已经缓存过了
 				this.bookContent = _nromalBook(hasThisChapter.chapterName, hasThisChapter.chapterContent)
-			} else {
+				this.$store.dispatch('setCacheBooks', { // 保存章节信息
+					bookSourceId: this.$route.query.bookSourceId,
+					currentChapterIndex: this.currentIndex
+				})
+			} else { // 本章没有缓存
+				let currentLink = this.thisBook.chapters[this.currentIndex].link // 当前章节链接
 				this.$loading.show()
-				getChapterContent(encodeURIComponent(this.bookSourceLinks[this.currentIndex])).then(res => {
+				getChapterContent(encodeURIComponent(currentLink)).then(res => {
 					this.$loading.hide()
 					if (res.ok) {
 					  if (res.chapter.cpContent) {
@@ -172,7 +169,6 @@ export default {
 				Toast('最后一章最后一页')
 			} else {
 				this.currentIndex++
-				this.getContent()
 			}
 		},
 		
@@ -182,13 +178,11 @@ export default {
 			} else {
 				this.currentIndex--
 				if (this.pagingPattern == 1 || this.pagingPattern == 2 || this.pagingPattern == 3) {
-					let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
-					let hasThisChapter = thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
+					let hasThisChapter = this.thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
 					if (hasThisChapter) { // 如果上一章已经缓存过，则显示上一章最后一页
 						this.isPrevChapter = isTool ? false : true
 					}
 				}
-				this.getContent()
 			}
 		},
 		
@@ -312,8 +306,7 @@ export default {
 	},
 	
 	beforeRouteLeave (to, from, next) {
-		let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
-		if (thisBook.isOnShelf == '0') { // 还没有加入书架，则离开页面时删除缓存书籍
+		if (this.thisBook.isOnShelf == '0') { // 还没有加入书架，则离开页面时删除缓存书籍
 			Dialog.confirm({
 			  title: '标题',
 			  message: '将本书加入书架？',
@@ -340,8 +333,6 @@ export default {
 	.read-page{
 		height: 100%;
 		position: relative;
-		background-color: rgba(238, 230, 221, 1);
-		filter: brightness(1); // 设置亮度 // $(".div").css('filter','brightness('+temp+')');
 		overflow-y: hidden;
 	}
 	.content-page{
@@ -352,7 +343,6 @@ export default {
 		padding: 30px 10px 50px 10px;
 		.book-inner{
 			text-align: justify;
-			line-height: 30px;
 			text-indent: 2em;
 		}
 		.book-title{
@@ -365,7 +355,6 @@ export default {
 			justify-content: space-around;
 			margin-top: 30px;
 			div{
-				font-size: 13px;
 				padding: 7px 20px;
 				border-radius: 5px;
 				border: 1px solid #999999;
@@ -382,21 +371,20 @@ export default {
 		.book-title1{
 			line-height: 20px;
 			font-size: 12px;
-			color: #585858;
+			text-align: center;
 		}
 		.read-article{
 			position: absolute;
 			overflow: hidden;
 			text-align: justify;
-			bottom: 20px;
-			top: 50px;
+			bottom: 25px;
+			top: 40px;
 			.read-section{
 				height: 100%;
 				.read-section-inner{
 					overflow: visible;
 					height: 100%;
 					.book-inner{
-						line-height: 30px; /*no*/
 						text-indent: 2em;
 					}
 				}
@@ -408,11 +396,10 @@ export default {
 			}
 		}
 		.article-page{
-			color: #585858;
-			font-size: 12px;
 			position: absolute;
 			left: 10px;
-			bottom: 10px ;
+			bottom: 10px;
+			font-size: 12px;
 		}
 	}
 	    
