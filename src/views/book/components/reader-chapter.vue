@@ -61,8 +61,8 @@ export default {
 		
 		getContent (item, index) { // 获取每章内容
 			this.$store.dispatch('setCacheBooks', { // 保存当前章节索引
-				chapters: this.chapters,
-				currentChapterIndex: index
+				currentChapterIndex: index,
+				bookSourceId: this.bookSource.bookSourceId
 			})
 			this.closeChapter()
 			this.$router.push({

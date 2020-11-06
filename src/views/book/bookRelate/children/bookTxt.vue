@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="read-page">
 		<div ref="wrapper" class="content-page" @click="setRead($event)">
 			<!-- 整页 -->
 			<div class="book-content" ref="content" v-if="pagingPattern===0">
@@ -31,15 +31,32 @@
 				<p class="article-page">{{currentPaging + '/' + resultPaging}}</p>
 			</v-touch>
 		</div>
+		
+		<reader-tool-page-top v-model="showTool"></reader-tool-page-top>
+		<reader-tool-page-bottom
+			v-model="showTool"
+			:resultPaging="resultPaging"
+			:currentPaging="currentPaging"
+			@prevChapter="prevChapter"
+			@nextChapter="nextChapter"
+			@openSetting="openSetting"></reader-tool-page-bottom>
+		<reader-setting v-model="showSetting"></reader-setting>
 	</div>
 </template>
 
 <script>
 // 护眼：rgb(200, 232, 200)；默认：rgb(238, 230, 221)；rgba(50,51,52,0.9)
 import { _nromalBook } from '../../../../utils/bookUtil.js'
-import { getChapterContent, getChapters } from '../../../../api/index.js'
-import { Toast } from 'vant'
+import { getChapterContent } from '../../../../api/index.js'
+import { Toast, Dialog } from 'vant'
+import readerToolPageTop from '../../components/reader-tool-page-top.vue'
+import readerToolPageBottom from '../../components/reader-tool-page-bottom.vue'
+import readerSetting from '../../components/reader-setting.vue'
 export default {
+	components: {
+		readerToolPageTop, readerToolPageBottom, readerSetting
+	},
+	
 	data () {
 		return {
 			bookContent: {
@@ -54,6 +71,9 @@ export default {
 			offsetX: 0,
 			bookSourceLinks: [], // 书籍link列表
 			currentIndex: 0, // 当前章节索引
+			isPrevChapter: false, // 是否上一章
+			showTool: false, // 是否显示工具栏
+			showSetting: false
 		}
 	},
 	
@@ -75,12 +95,26 @@ export default {
 				  let scrollW = this.$refs.bookInner.scrollWidth
 				  let clientW = this.$refs.bookInner.clientWidth
 				  this.resultPaging = Math.floor(scrollW / clientW)
-					this.currentPaging = 1
-					this.styleObject = {
-						transform: 'translateX(' + '0px' + ')'
+					if (this.isPrevChapter) { // 上一章，默认最后一页
+						this.isPrevChapter = false
+						this.currentPaging = this.resultPaging
+						this.styleObject = {
+							transform: 'translateX(' + (-(this.currentPaging - 1) * (this.clWidth - 10)) + 'px' + ')'
+						}
+					} else {
+						this.currentPaging = 1
+						this.styleObject = {
+							transform: 'translateX(' + '0px' + ')'
+						}
 					}
 				})
 			}
+		},
+		currentIndex () {
+			this.$store.dispatch('setCacheBooks', { // 保存章节信息
+				bookSourceId: this.$route.query.bookSourceId,
+				currentChapterIndex: this.currentIndex
+			})
 		}
 	},
 	
@@ -100,7 +134,9 @@ export default {
 			if (hasThisChapter) { // 如果本章已经缓存过了
 				this.bookContent = _nromalBook(hasThisChapter.chapterName, hasThisChapter.chapterContent)
 			} else {
+				this.$loading.show()
 				getChapterContent(encodeURIComponent(this.bookSourceLinks[this.currentIndex])).then(res => {
+					this.$loading.hide()
 					if (res.ok) {
 					  if (res.chapter.cpContent) {
 					    this.bookContent = _nromalBook(res.chapter.title, res.chapter.cpContent)
@@ -116,6 +152,8 @@ export default {
 								chapterContent: res.chapter.cpContent ? res.chapter.cpContent : res.chapter.body
 							}
 						})
+					} else {
+						Toast(res.desc)
 					}
 				})
 			}
@@ -130,11 +168,18 @@ export default {
 			}
 		},
 		
-		prevChapter () { // 上一章
+		prevChapter (isTool) { // 上一章
 			if (this.currentIndex == 0) { // 第一章
 				Toast('第一章第一页')
 			} else {
 				this.currentIndex--
+				if (this.pagingPattern == 1 || this.pagingPattern == 2 || this.pagingPattern == 3) {
+					let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+					let hasThisChapter = thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
+					if (hasThisChapter) { // 如果上一章已经缓存过，则显示上一章最后一页
+						this.isPrevChapter = isTool ? false : true
+					}
+				}
 				this.getContent()
 			}
 		},
@@ -160,7 +205,7 @@ export default {
 						this.prevChapter()
 					}
 				} else if (offsetX <= currentX && currentX <= offsetX * 2) { // 用户点击中间1/3，弹出选择框
-					console.log('中间1/3')
+					this.showTool = !this.showTool
 				} else { // 用户点击右边1/3，下一章
 					if (this.resultPaging == this.currentPaging) { // 最后一页
 						this.nextChapter()
@@ -236,12 +281,46 @@ export default {
 					}
 				}
 			}
+		},
+		
+		openSetting () { // 打开设置
+			this.showTool = false
+			this.showSetting = true
+		}
+	},
+	
+	beforeRouteLeave (to, from, next) {
+		let thisBook = this.cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+		if (thisBook.isOnShelf == '0') { // 还没有加入书架，则离开页面时删除缓存书籍
+			Dialog.confirm({
+			  title: '标题',
+			  message: '将本书加入书架？',
+			}).then(() => {
+				this.$store.dispatch('setCacheBooks', {
+					bookSourceId: this.$route.query.bookSourceId,
+					isOnShelf: '1'
+				})
+				next()
+			}).catch(() => {
+				this.$store.dispatch('deleteCasheBooks', {
+					bookSourceId: this.$route.query.bookSourceId
+				})
+				next()
+			})
+		} else {
+			next()
 		}
 	}
 }
 </script>
 
 <style scoped="scoped" lang="less">
+	.read-page{
+		height: 100%;
+		position: relative;
+		background-color: rgba(238, 230, 221, 1);
+		filter: brightness(1); // 设置亮度 // $(".div").css('filter','brightness('+temp+')');
+	}
 	.content-page{
 		overflow-y: auto;
 		height: 100%;

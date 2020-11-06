@@ -104,8 +104,8 @@
 		</div>
 		
 		<div class="detail-bottm">
-			<div class="btn-one">加入书架</div>
-			<div class="btn-two">开始阅读</div>
+			<div class="btn-one" @click="shelfFunc">{{isOnShelf == '0' ? '放入书架' : '移除书架'}}</div>
+			<div class="btn-two" @click="goTxt">开始阅读</div>
 		</div>
 	</div>
 </template>
@@ -133,7 +133,17 @@ export default {
 			scrollTopValue: -1, // 滚动距顶部的距离
 			title: '书籍信息',
 			showAll: false, // 简介是否显示全部
-			bookDetail: {}
+			bookDetail: {},
+		}
+	},
+	
+	computed: {
+		cacheBooks () {
+			return this.$store.getters.cacheBooks
+		},
+		isOnShelf () {
+			let thisBook = this.cacheBooks.find(item => item.bookId == this.$route.query.bookId) // 缓存中是否有此书
+			return thisBook ? thisBook.isOnShelf : '0'
 		}
 	},
 	
@@ -162,7 +172,9 @@ export default {
 					bookId: this.$route.query.bookId,
 					bookSourceId: bookMsg.bookId,
 					bookName: bookMsg.bookName,
-					bookImg: bookMsg.bookImg
+					bookImg: bookMsg.bookImg,
+					updatedTime: bookMsg.updatedTime,
+					lastChapter: bookMsg.lastChapter
 				})
 			})
 		},
@@ -182,7 +194,32 @@ export default {
 				this.navBarStyle.backgroundColor = "rgba(255, 255, 255, 1)",
 				this.navBarStyle.color = "inherit",
 				this.title = this.bookDetail.bookName;
+		},
+		
+		goTxt () { // 开始阅读
+			this.$router.push({
+				path: '/book/bookRelate/bookTxt',
+				query: {
+					bookSourceId: this.bookDetail.bookId
+				}
+			})
+		},
+		
+		shelfFunc () { // 加入书架、移除书架
+			this.$store.dispatch('setCacheBooks', {
+				bookSourceId: this.bookDetail.bookId,
+				isOnShelf: this.isOnShelf == '0' ? '1' : '0'
+			})
 		}
+	},
+	
+	beforeRouteLeave (to, from, next) {
+		if (to.name != 'book/bookRelate/bookTxt' && this.isOnShelf == '0') { // 如果去往的页面不是章节页面，且不在书架中，则删除本书缓存
+			this.$store.dispatch('deleteCasheBooks', {
+				bookSourceId: this.bookDetail.bookId
+			})
+		}
+		next()
 	}
 }
 </script>

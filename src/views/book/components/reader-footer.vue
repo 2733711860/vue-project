@@ -3,13 +3,13 @@
   	<ul class="footer">
 			<li class="item">
 			  <router-link to="/book/shelf" class="flex2" active-class="active">
-					<van-icon class="text" name="send-gift-o"></van-icon>
+					<i class="iconfont shelf text"></i>
 			    <p class="text menuText">书架</p>
 			  </router-link>
 			</li>
 	    <li class="item">
 	      <router-link to="/book/home" class="flex2" active-class="active">
-					<van-icon class="text" name="home-o"></van-icon>
+					<i class="iconfont book text"></i>
 	        <p class="text menuText">书城</p>
 	      </router-link>
 	    </li>
@@ -21,7 +21,7 @@
 	    </li>
 	    <li class="item">
 	      <router-link to="/book/center" class="flex2" active-class="active">
-	        <van-icon class="text" name="contact"></van-icon>
+					<i class="iconfont wode text"></i>
 	        <p class="text menuText">我的</p>
 	      </router-link>
 	    </li>
