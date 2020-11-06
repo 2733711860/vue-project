@@ -13,7 +13,7 @@
 					<div class="custom-button"></div>
 				</template>
 			</van-slider>
-			<span>默认</span>
+			<span @click="onChange('default')">默认</span>
 		</div>
 		
 		<div class="fontSet">
@@ -26,33 +26,32 @@
 				<i class="iconfont ziti"></i>
 				<span>+</span>
 			</div>
-			<span class="defau">默认</span>
+			<span class="defau" @click="changeFontSize()">默认</span>
 		</div>
 		
 		<div class="column-cls">
-			<div>紧凑</div>
-			<div>舒适</div>
-			<div>松散</div>
-			<div>默认</div>
+			<div 
+				v-for="(item, index) in lineHeightList" 
+				:key="index + 'lineHeight'"
+				:class="{'active': item.value == setting.lineHeight}"
+				@click="changeLine(item)">{{item.text}}</div>
 		</div>
 		
 		<div class="column-cls">
-			<div>整页</div>
-			<div>平移</div>
-			<div>点移</div>
-			<div>仿真</div>
-			<div>默认</div>
+			<div
+				v-for="(item, index) in pageMode"
+				:key="index + 'mode'"
+				:class="{'active': item.value == setting.turnPageMode}"
+				@click="changeMode(item)">{{item.text}}</div>
 		</div>
 		
 		<div class="set-bg">
 			<div class="bg-div">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
+				<div
+					v-for="(item, index) in bgColorList"
+					:key="index + 'bg'"
+					:style="{backgroundColor: item}"
+					@click="chooseBg(item)"></div>
 			</div>
 		</div>
 	</div>
@@ -64,6 +63,18 @@ export default {
 		return {
 			showS: this.value,
 			currentBright: 0,
+			lineHeightList: [
+				{ text: '紧凑', value: 25 }, { text: '舒适', value: 28 },
+				{ text: '松散', value: 35 }, { text: '默认', value: 30 }
+			],
+			pageMode: [
+				{ text: '整页', value: 0}, { text: '平移', value: 1},
+				{ text: '点移', value: 2}, { text: '仿真', value: 4}, { text: '默认', value: 3}
+			],
+			bgColorList: ['rgba(183, 198, 191, 1)', 'rgba(202, 201, 206, 1)', 'rgba(236, 216, 179, 1)', 'rgba(245, 228, 228, 1)',
+				'rgba(222, 210, 188, 1)', 'rgba(238, 230, 221, 1)', 'rgba(215, 201, 188, 1)', 'rgba(141, 206, 141, 1.0)',
+				'rgba(228, 241, 245, 1)', 'rgba(224, 224, 224, .8)'
+			]
 		}
 	},
 	
@@ -92,21 +103,41 @@ export default {
 	
 	methods: {
 		onChange (val) { // 切换亮度
+			this.currentBright = val == 'default' ? 90 : val
 			this.$store.dispatch('setSetting', {
-				brightness: val/100
+				brightness: this.currentBright/100
 			})
 		},
 		
 		changeFontSize (type) { // 切换字体大小
 			let fontsize = this.setting.fontSize
-			if (type == '-' && fontsize > 9) {
-				fontsize--
-			}
-			if (type == '+' && fontsize < 18) {
-				fontsize++
-			}
+			if (type == '-' && fontsize > 9) fontsize--;
+			if (type == '+' && fontsize < 18) fontsize++;
+			if (!type) fontsize = 14;
 			this.$store.dispatch('setSetting', {
 				fontSize: fontsize
+			})
+		},
+		
+		changeLine (item) { // 切换行间距
+			this.$store.dispatch('setSetting', {
+				lineHeight: item.value
+			})
+		},
+		
+		changeMode (item) { // 切换翻页模式
+		  if (item.value == '4') {
+				console.log('暂未实现')
+				return
+			}
+			this.$store.dispatch('setSetting', {
+				turnPageMode: item.value
+			})
+		},
+		
+		chooseBg (item) { // 选择背景
+			this.$store.dispatch('setSetting', {
+				backgroundColor: item
 			})
 		}
 	}
@@ -184,6 +215,10 @@ export default {
 			div:not(:last-child){
 				margin-right: 15px;
 			}
+			.active{
+				color: #ff6c37;
+				border: 1px solid #ff6c37;
+			}
 		}
 		.set-bg{
 			width: 100%;
@@ -198,7 +233,6 @@ export default {
 				div{
 					width: 45px;
 					height: 40px;
-					background-color: #D2E0E6;
 				}
 				div:not(:last-child){
 					margin-right: 20px;

@@ -7,9 +7,11 @@
 			</div>
 			
 			<div class="menu-content">
-				<div class="item-chapter">
-					<i class="iconfont dian"></i>
-					<div>第一张第一张第一张第一张第一张第一张第一张第一张第一张</div>
+				<div class="item-chapter"v-for="(item, index) in thisBook.chapters" @click="setChapter(index)">
+					<i class="iconfont deng" v-if="thisBook.currentChapterIndex == index"></i>
+					<i class="iconfont dian" v-else
+						:style="{color: (thisBook.hasReadChapterList.find(item => item.chapterIndex == index) ? '#07C160': '#d5d5d5')}"></i>
+					<div :style="{color: (thisBook.currentChapterIndex == index ? '#f80000' : '')}">{{item.title}}</div>
 				</div>
 			</div>
 		</div>
@@ -30,6 +32,14 @@ export default {
 		value: false
 	},
 	
+	computed: {
+		thisBook () {
+			let cacheBooks = this.$store.getters.cacheBooks
+			let thisBook = cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+			return thisBook ? thisBook : {}
+		}
+	},
+	
 	watch: {
 		showMenu () {
 			this.$emit('input', this.showMenu)
@@ -41,6 +51,11 @@ export default {
 	
 	methods: {
 		closeMenu () { // 关闭目录
+			this.showMenu = false
+		},
+		
+		setChapter (index) {
+			this.$emit('getThisContent', index)
 			this.showMenu = false
 		}
 	}
@@ -55,6 +70,7 @@ export default {
 		top: 0;
 		transform: translateX(-100%);
 		transition: transform 0.5s;
+		color: #535353;
 		.menu-div{
 			position: absolute;
 			z-index: 11;
@@ -82,8 +98,11 @@ export default {
 					border-bottom: 1px solid #d5d5d5;
 					display: flex;
 					.dian{
-						color: #d5d5d5; // #07C160
 						margin-right: 5px;
+					}
+					.deng{
+						margin-right: 5px;
+						color: #f80000;
 					}
 					div{
 						flex: 1;

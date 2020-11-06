@@ -57,6 +57,7 @@ export default {
 		top: 0;
 		transform: translateX(-100%);
 		transition: transform 0.5s;
+		color: #535353;
 		.download-div{
 			position: absolute;
 			z-index: 11;

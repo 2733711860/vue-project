@@ -21,7 +21,7 @@
 				<i class="iconfont mulu icon1"></i>
 				<div>目录</div>
 			</div>
-			<div class="item-tool">
+			<div :class="['item-tool', setting.dayNight == 'night' ? 'active' : '']" @click="changeDayNight">
 				<i class="iconfont yejian icon"></i>
 				<div>夜间</div>
 			</div>
@@ -53,6 +53,9 @@ export default {
 		thisBook () {
 			let cacheBooks = this.$store.getters.cacheBooks
 			return cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+		},
+		setting () {
+			return this.$store.getters.setting
 		}
 	},
 	
@@ -100,6 +103,12 @@ export default {
 		
 		openMenu () { // 目录
 			this.$emit('openMenu')
+		},
+		
+		changeDayNight () { // 日间模式夜间模式
+			this.$store.dispatch('setSetting', {
+				dayNight: this.setting.dayNight == 'day' ? 'night' : 'day'
+			})
 		}
 	}
 }
@@ -141,6 +150,9 @@ export default {
 			display: flex;
 			justify-content: space-between;
 			align-items: flex-end;
+			.active{
+				color: #ff6c37;
+			}
 			.item-tool{
 				display: flex;
 				flex-direction: column;

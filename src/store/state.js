@@ -14,8 +14,8 @@ const state = {
 		defaultFontSize: 14, // 默认字体大小
 		lineHeight: 30, // 25:紧凑  28:舒适  35:松散  30:默认
 		defaultLineHeight: 30, // 默认行间距
-		turnPageMode: '3', // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
-		backgroundColor: 'rgba(238, 230, 221, 1)' // 阅读背景颜色
+		turnPageMode: 3, // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
+		backgroundColor: 'rgba(236, 216, 179, 1)' // 阅读背景颜色
 	},
 	keepAliveList: ['book/bookRelate/detail', 'book/search'],
 }

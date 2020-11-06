@@ -1,5 +1,10 @@
 <template>
-	<div class="read-page" :style="{fontSize: setting.fontSize + 'px', backgroundColor: setting.backgroundColor, filter: 'brightness(' + setting.brightness + ')'}">
+	<div class="read-page" 
+		:style="{fontSize: setting.fontSize + 'px', 
+			backgroundColor: setting.dayNight == 'day' ? setting.backgroundColor : '#000',
+			color: setting.dayNight == 'day' ? '#535353' : '#c1c1c1',
+			filter: 'brightness(' + setting.brightness + ')'}"
+	>
 		<div ref="wrapper" class="content-page" @click="setRead($event)">
 			<!-- 整页 -->
 			<div class="book-content" ref="content" v-if="pagingPattern===0">
@@ -44,7 +49,7 @@
 			@openMenu="openMenu"></reader-tool-page-bottom>
 		<reader-setting v-model="showSetting"></reader-setting>
 		<readerDownload v-model="showDownload"></readerDownload>
-		<reader-chapter-two v-model="showMenu"></reader-chapter-two>
+		<reader-chapter-two v-model="showMenu" @getThisContent="getThisContent"></reader-chapter-two>
 	</div>
 </template>
 
@@ -69,14 +74,13 @@ export default {
 			  title: '',
 			  content: ''
 			},
-			pagingPattern: 3, // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
 			styleObject: '',
 			clWidth: document.documentElement.clientWidth || document.body.clientWidth,
 			currentPaging: 1, // 当前页
 			resultPaging: 1, // 总页数
 			offsetX: 0,
 			bookSourceLinks: [], // 书籍link列表
-			currentIndex: 0, // 当前章节索引
+			currentIndex: -1, // 当前章节索引
 			isPrevChapter: false, // 是否上一章
 			showTool: false, // 是否显示工具栏
 			showSetting: false, // 是否显示设置页
@@ -86,6 +90,9 @@ export default {
 	},
 	
 	computed: {
+		pagingPattern () { // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
+			return this.$store.getters.setting.turnPageMode
+		},
 		thisBook () { // 当前书籍
 			let cacheBooks = this.$store.getters.cacheBooks
 			let nowBook = cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
@@ -129,6 +136,9 @@ export default {
 	},
 	
 	methods: {
+		getThisContent (index) { // 从目录点击章节
+			this.currentIndex = index
+		},
 		getChapterDetail () { // 只要当前章节index发生变化，就获取数据
 			let hasThisChapter = this.thisBook.hasReadChapterList.find(item => item.chapterIndex == this.currentIndex)
 			if (hasThisChapter) { // 如果本章已经缓存过了
@@ -187,9 +197,16 @@ export default {
 		},
 		
 		setRead (e) { // 点击操作
+			let currentX = e.pageX
+			let offsetX = this.clWidth / 3
+			if (offsetX <= currentX && currentX <= offsetX * 2) { // 用户点击中间1/3，弹出选择框
+				if (this.showSetting) {
+					this.showSetting = false
+				} else {
+					this.showTool = !this.showTool
+				}
+			}
 			if (this.pagingPattern == 2 || this.pagingPattern == 3) { // 点滑/无
-				let currentX = e.pageX
-				let offsetX = this.clWidth / 3
 				if (currentX <= offsetX) { // 用户点击左边1/3，上一章
 					if (this.currentPaging != 1) { // 不是第一页
 						this.currentPaging--
@@ -207,11 +224,6 @@ export default {
 						this.prevChapter()
 					}
 				} else if (offsetX <= currentX && currentX <= offsetX * 2) { // 用户点击中间1/3，弹出选择框
-					if (this.showSetting) {
-						this.showSetting = false
-					} else {
-						this.showTool = !this.showTool
-					}
 				} else { // 用户点击右边1/3，下一章
 					if (this.resultPaging == this.currentPaging) { // 最后一页
 						this.nextChapter()

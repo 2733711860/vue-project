@@ -115,7 +115,7 @@ export const setSetting = function({ commit, state }, settings) {
 	copySetting.brightness = settings.brightness ? settings.brightness : copySetting.brightness
 	copySetting.fontSize = settings.fontSize ? settings.fontSize : copySetting.fontSize
 	copySetting.lineHeight = settings.lineHeight ? settings.lineHeight : copySetting.lineHeight
-	copySetting.turnPageMode = settings.turnPageMode ? settings.turnPageMode : copySetting.turnPageMode
+	copySetting.turnPageMode = (settings.turnPageMode || settings.turnPageMode == 0) ? settings.turnPageMode : copySetting.turnPageMode
 	copySetting.backgroundColor = settings.backgroundColor ? settings.backgroundColor : copySetting.backgroundColor
 	copySetting.dayNight = settings.dayNight ? settings.dayNight : copySetting.dayNight
 	copySetting.bookSource = settings.bookSource ? settings.bookSource : copySetting.bookSource

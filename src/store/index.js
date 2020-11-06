@@ -22,7 +22,8 @@ export default new Vuex.Store({
 				cats: val.cats,
 				ranks: val.ranks,
 				historyList: val.historyList,
-				cacheBooks: val.cacheBooks
+				cacheBooks: val.cacheBooks,
+				setting: val.setting
 			}
 		}
 	})]

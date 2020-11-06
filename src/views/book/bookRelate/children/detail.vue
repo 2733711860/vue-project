@@ -353,6 +353,7 @@ export default {
 		}
 		.newest{
 			flex: 1;
+			overflow-y: hidden;
 			display: flex;
 			justify-content: space-between;
 			.chapter-name{
