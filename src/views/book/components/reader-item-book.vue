@@ -5,9 +5,9 @@
 			<h1>{{bookBasic.bookName}}</h1>
 			<div class="desc" v-html="bookBasic.bookDesc"></div>
 			<div class="module-book-content-bot">
-				<div>作者：{{bookBasic.bookAuthor}}</div>
+				<div>{{bookBasic.bookAuthor}}</div>
 				<div class="book-tag">
-					<span>{{bookBasic.bookType}}</span>
+					<span>{{bookBasic.bookType | changeType}}</span>
 					<span class="boot-tag-rate">{{bookBasic.bookRate}}分</span>
 				</div>
 			</div>
@@ -16,11 +16,18 @@
 </template>
 
 <script>
+import { typeObj, baseUrl } from '../../../utils/bookUtil.js'
 export default {
 	props: {
 		bookBasic: {
 			type: Object,
 			default: () => {}
+		}
+	},
+	
+	filters: {
+		changeType (val) {
+			return typeObj[val]
 		}
 	},
 	
@@ -37,7 +44,7 @@ export default {
 		display: flex;
 		padding: 10px 0;
 		.module-book-pic{
-			width: 80px;
+			width: 70px;
 			height: 100px;
 			border-radius: 3px;
 		}

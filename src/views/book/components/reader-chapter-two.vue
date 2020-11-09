@@ -34,8 +34,7 @@ export default {
 	
 	computed: {
 		thisBook () {
-			let cacheBooks = this.$store.getters.cacheBooks
-			let thisBook = cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+			let thisBook = this.$store.getters.cacheBooks.find(item => item.bookId == this.$route.query.bookId)
 			return thisBook ? thisBook : {}
 		}
 	},

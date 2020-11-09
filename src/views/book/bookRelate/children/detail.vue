@@ -31,7 +31,7 @@
 			<span class="chapter-title" @click="getChapter">查看目录</span>
 			<span class="newest">
 				<span class="chapter-name">最新：{{bookDetail.lastChapter}}</span>
-				<span class="chapter-btn">{{bookDetail.updatedTime}}<van-icon name="arrow" /></span>
+				<span class="chapter-btn">{{bookDetail.updatedTime | changeTime}}<van-icon name="arrow" /></span>
 			</span>
 		</div>
 		
@@ -41,8 +41,8 @@
 				<div class="book-rate-value">{{bookDetail.retentionRatio}}%</div>
 			</div>
 			<div class="book-rate">
-				<div>评分（{{bookDetail.bookRate ? bookDetail.bookRate.tip : ''}}）</div>
-				<div class="book-rate-value">{{bookDetail.bookRate ? bookDetail.bookRate.score : ''}}</div>
+				<div>评分</div>
+				<div class="book-rate-value">{{bookDetail.bookRate}}</div>
 			</div>
 		</div>
 		
@@ -114,7 +114,7 @@
 import readerHeaderTwo from '../../components/reader-header-two.vue'
 import readerItemBookTwo from '../../components/reader-item-book-two.vue'
 import readerComment from '../../components/reader-comment.vue'
-import { getBookDetail, getBookSource, getChapters } from '../../../../api/index.js'
+import { getBookChapter } from '../../../../api/index.js'
 import { getBook } from '../../../../utils/bookUtil.js'
 import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
@@ -132,55 +132,40 @@ export default {
 			},
 			scrollTopValue: -1, // 滚动距顶部的距离
 			title: '书籍信息',
-			showAll: false, // 简介是否显示全部
-			bookDetail: {},
+			showAll: false // 简介是否显示全部
+		}
+	},
+	
+	filters: {
+		changeTime (val) {
+			return moment(val).format('YYYY年MM月DD日 HH:mm')
 		}
 	},
 	
 	computed: {
-		cacheBooks () {
-			return this.$store.getters.cacheBooks
+		bookDetail () { // 当前书
+			let books = this.$store.getters.cacheBooks.find(item => item.bookId == this.$route.query.bookId) // 缓存中是否有此书
+			return books ? books : {}
 		},
-		isOnShelf () {
-			let thisBook = this.cacheBooks.find(item => item.bookId == this.$route.query.bookId) // 缓存中是否有此书
-			return thisBook ? thisBook.isOnShelf : '0'
+		isOnShelf () { // 是否放入书架
+			return this.bookDetail.isOnShelf ? this.bookDetail.isOnShelf : '0'
 		}
 	},
 	
 	created () {
-		this.getDetail()
+		this.$store.dispatch('setBookSourceId', this.$route.query.bookId)
+		this.getChapters()
 	},
 	
 	methods: {
-		getDetail () { // 获取书籍详情
-			getBookDetail(this.$route.query.bookId).then(res => {
-				let bookMsg = getBook(res)
-				bookMsg.updatedTime = moment(bookMsg.updatedTime).format('YYYY年MM月DD日 HH:mm:ss')
-				this.getBookSources(bookMsg)
-			})
-		},
-		
-		getBookSources (bookMsg) { // 获取小说源
-			getBookSource(this.$route.query.bookId).then(res => {
-				bookMsg.bookId = res[0]._id
-				this.bookDetail = bookMsg
-				this.getChapters()
-			})
-		},
-		
 		getChapters () { // 调接口获取目录
-			getChapters(this.bookDetail.bookId).then(res => {
+			getBookChapter({
+				bookId: this.bookDetail.bookId
+			}).then(res => {
 				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
 					bookId: this.$route.query.bookId,
-					bookSourceId: this.bookDetail.bookId,
-					bookName: this.bookDetail.bookName,
-					bookImg: this.bookDetail.bookImg,
-					updatedTime: this.bookDetail.updatedTime,
-					lastChapter: this.bookDetail.lastChapter,
-					chapters: res.chapters
+					chapters: res.data.list
 				})
-				
-				this.$store.dispatch('setBookSourceId', this.bookDetail.bookId)
 			})
 		},
 		
@@ -205,14 +190,14 @@ export default {
 			this.$router.push({
 				path: '/book/bookRelate/bookTxt',
 				query: {
-					bookSourceId: this.bookDetail.bookId
+					bookId: this.bookDetail.bookId
 				}
 			})
 		},
 		
 		shelfFunc () { // 加入书架、移除书架
 			this.$store.dispatch('setCacheBooks', {
-				bookSourceId: this.bookDetail.bookId,
+				bookId: this.bookDetail.bookId,
 				isOnShelf: this.isOnShelf == '0' ? '1' : '0'
 			})
 		}
@@ -221,7 +206,7 @@ export default {
 	beforeRouteLeave (to, from, next) {
 		if (to.name != 'book/bookRelate/bookTxt' && this.isOnShelf == '0') { // 如果去往的页面不是章节页面，且不在书架中，则删除本书缓存
 			this.$store.dispatch('deleteCasheBooks', {
-				bookSourceId: this.bookDetail.bookId
+				bookId: this.bookDetail.bookId
 			})
 		}
 		next()

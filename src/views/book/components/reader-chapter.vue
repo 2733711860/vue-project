@@ -21,9 +21,7 @@ import { getChapters } from '../../../api/index.js'
 export default {
 	computed: {
 		thisBook () {
-			let cacheBooks = this.$store.getters.cacheBooks
-			let nowBookSourceId = this.$store.getters.bookSourceId
-			let thisBook = cacheBooks.find(item => item.bookSourceId == nowBookSourceId)
+			let thisBook = this.$store.getters.cacheBooks.find(item => item.bookId == this.$store.getters.bookSourceId)
 			return thisBook ? thisBook : {}
 		}
 	},
@@ -38,13 +36,13 @@ export default {
 		getContent (item, index) { // 获取每章内容
 			this.$store.dispatch('setCacheBooks', { // 保存当前章节索引
 				currentChapterIndex: index,
-				bookSourceId: this.thisBook.bookSourceId
+				bookId: this.thisBook.bookId
 			})
 			this.closeChapter()
 			this.$router.push({
 				path: '/book/bookRelate/bookTxt',
 				query: {
-					bookSourceId: this.thisBook.bookSourceId
+					bookId: this.thisBook.bookId
 				}
 			})
 		},

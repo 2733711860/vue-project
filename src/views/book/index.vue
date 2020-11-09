@@ -14,7 +14,6 @@ export default {
 		readerHeader, readerFooter
 	},
 	mounted() {
-		console.log(this.$route.meta.showTop)
 	}
 }
 </script>

@@ -51,6 +51,7 @@
 					v-for="(item, index) in bgColorList"
 					:key="index + 'bg'"
 					:style="{backgroundColor: item}"
+					:class="{'active': item == setting.backgroundColor}"
 					@click="chooseBg(item)"></div>
 			</div>
 		</div>
@@ -236,6 +237,9 @@ export default {
 				}
 				div:not(:last-child){
 					margin-right: 20px;
+				}
+				.active{
+					border: 1px solid #ff6c37;
 				}
 			}
 		}

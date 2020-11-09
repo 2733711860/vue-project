@@ -56,7 +56,7 @@
 <script>
 // 护眼：rgb(200, 232, 200)；默认：rgb(238, 230, 221)；rgba(50,51,52,0.9)
 import { _nromalBook } from '../../../../utils/bookUtil.js'
-import { getChapterContent } from '../../../../api/index.js'
+import { getBookContent } from '../../../../api/index.js'
 import { Toast, Dialog } from 'vant'
 import readerToolPageTop from '../../components/reader-tool-page-top.vue'
 import readerToolPageBottom from '../../components/reader-tool-page-bottom.vue'
@@ -94,8 +94,7 @@ export default {
 			return this.$store.getters.setting.turnPageMode
 		},
 		thisBook () { // 当前书籍
-			let cacheBooks = this.$store.getters.cacheBooks
-			let nowBook = cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
+			let nowBook = this.$store.getters.cacheBooks.find(item => item.bookId == this.$route.query.bookId)
 			return nowBook ? nowBook : {}
 		},
 		setting () {
@@ -144,32 +143,30 @@ export default {
 			if (hasThisChapter) { // 如果本章已经缓存过了
 				this.bookContent = _nromalBook(hasThisChapter.chapterName, hasThisChapter.chapterContent)
 				this.$store.dispatch('setCacheBooks', { // 保存章节信息
-					bookSourceId: this.$route.query.bookSourceId,
+					bookId: this.$route.query.bookId,
 					currentChapterIndex: this.currentIndex
 				})
 			} else { // 本章没有缓存
 				let currentLink = this.thisBook.chapters[this.currentIndex].link // 当前章节链接
 				this.$loading.show()
-				getChapterContent(encodeURIComponent(currentLink)).then(res => {
+				getBookContent({
+					link: currentLink
+				}).then(res => {
 					this.$loading.hide()
-					if (res.ok) {
-					  if (res.chapter.cpContent) {
-					    this.bookContent = _nromalBook(res.chapter.title, res.chapter.cpContent)
-					  } else {
-					    this.bookContent = _nromalBook(res.chapter.title, res.chapter.body)
-					  }
-						this.$store.dispatch('setCacheBooks', { // 保存章节信息
-							bookSourceId: this.$route.query.bookSourceId,
-							currentChapterIndex: this.currentIndex,
-							newReadChapter: {
-								chapterIndex: this.currentIndex,
-								chapterName: res.chapter.title,
-								chapterContent: res.chapter.cpContent ? res.chapter.cpContent : res.chapter.body
-							}
-						})
+					if (res.cpContent) {
+						this.bookContent = _nromalBook(res.title, res.cpContent)
 					} else {
-						Toast(res.desc)
+						this.bookContent = _nromalBook(res.title, '正文获取失败！')
 					}
+					this.$store.dispatch('setCacheBooks', { // 保存章节信息
+						bookId: this.$route.query.bookId,
+						currentChapterIndex: this.currentIndex,
+						newReadChapter: {
+							chapterIndex: this.currentIndex,
+							chapterName: res.title,
+							chapterContent: res.cpContent ? res.cpContent : '正文获取失败！'
+						}
+					})
 				})
 			}
 		},
@@ -324,14 +321,11 @@ export default {
 			  message: '将本书加入书架？',
 			}).then(() => {
 				this.$store.dispatch('setCacheBooks', {
-					bookSourceId: this.$route.query.bookSourceId,
+					bookId: this.$route.query.bookId,
 					isOnShelf: '1'
 				})
 				next()
 			}).catch(() => {
-				this.$store.dispatch('deleteCasheBooks', {
-					bookSourceId: this.$route.query.bookSourceId
-				})
 				next()
 			})
 		} else {
