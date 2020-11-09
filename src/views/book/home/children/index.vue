@@ -104,7 +104,7 @@
 
 <script>
 import readerItemBook from '../../components/reader-item-book.vue'
-import { getRankBook } from '../../../../api/index.js'
+import { getBookList } from '../../../../api/index.js'
 import { getBook } from '../../../../utils/bookUtil.js'
 export default {
 	components: {
@@ -131,36 +131,58 @@ export default {
 	
 	methods: {
 		getYouLike () { // 猜你喜欢，默认起点月票榜
-			getRankBook('54d4306c321052167dfb75e4').then(res => {
-				this.likeBooks = res.ranking.books.slice(0, 4).map(getBook)
+			getBookList({
+				page: '1',
+				pageSize: '4',
+				bookType: '1'
+			}).then(res => {
+				this.likeBooks = res.list.slice(0, 3)
 			})
 		},
 		
 		getMailHots () { // 男频热榜，默认追书最热榜 Top100
-			getRankBook('564d8494fe996c25652644d2').then(res => {
-				this.maleHots = res.ranking.books.slice(0, 4).map(getBook)
+			getBookList({
+				page: '1',
+				pageSize: '4',
+				bookType: '2'
+			}).then(res => {
+				this.maleHots = res.list.slice(0, 3)
 			})
 		},
 		
 		getFemaleHots () { // 女频热榜，默认追书最热榜 Top100
-			getRankBook('564d85b6dd2bd1ec660ea8e2').then(res => {
-				this.femaleHots = res.ranking.books.slice(0, 4).map(getBook)
+			getBookList({
+				page: '1',
+				pageSize: '4',
+				bookType: '3'
+			}).then(res => {
+				this.femaleHots = res.list.slice(0, 3)
 			})
 		},
 		
 		getNewBooks () { // 新书榜，默认新书榜
-			getRankBook('5a39ca3ffc84c2b8ef82da82').then(res => {
-				this.newBooks = res.ranking.books.slice(0, 4).map(getBook)
+			getBookList({
+				page: '1',
+				pageSize: '4',
+				bookType: '4'
+			}).then(res => {
+				this.newBooks = res.list.slice(0, 3)
 			})
 		},
 		
 		getEndBooks () { // 完结榜，默认完结榜
-			getRankBook('564eea0b731ade4d6c509493').then(res => {
-				this.endBooks = res.ranking.books.slice(0, 4).map(getBook)
+			getBookList({
+				page: '1',
+				pageSize: '4',
+				bookType: '5'
+			}).then(res => {
+				this.endBooks = res.list.slice(0, 3)
 			})
 		},
 		
 		goDetail(item) {
+			this.$store.dispatch('setCacheBooks', item) // 保存书籍信息
+			
 			this.$router.push({
 				path: '/book/bookRelate/detail',
 				query: {

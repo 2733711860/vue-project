@@ -50,10 +50,6 @@ export default {
 	},
 	
 	computed: {
-		thisBook () {
-			let cacheBooks = this.$store.getters.cacheBooks
-			return cacheBooks.find(item => item.bookSourceId == this.$route.query.bookSourceId)
-		},
 		setting () {
 			return this.$store.getters.setting
 		}

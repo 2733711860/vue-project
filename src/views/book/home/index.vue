@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<reader-tabs
-			:tabList="tabList">
+		<!-- <reader-tabs
+			:tabList="tabList"> -->
 			<router-view class="home-content"></router-view>
-		</reader-tabs>
+		<!-- </reader-tabs> -->
 	</div>
 </template>
 
@@ -17,14 +17,18 @@ export default {
 	data () {
 		return {
 			tabList: [
-				{ name: '精选' },
-				{ name: '榜单' },
-				{ name: '分类' }
+				{ name: '精选', path: '/book/home/index' },
+				{ name: '榜单', path: '/book/home/rank' },
+				{ name: '分类', path: '/book/home/classify' }
 			]
 		}
 	}
 }
 </script>
 
-<style>
+<style scoped="scoped" lang="less">
+	.home-content{
+		height: 100%;
+		position: relative;
+	}
 </style>
