@@ -29,8 +29,8 @@ export default {
 	},
 	
   created() {
-		if (!this.cats) this.getAllType(); // 看是否有分类信息，没有则调用接口获取
-		if (!this.ranks) this.getAllRank(); // 看是否有排行榜分类信息，没有则调用接口获取
+		// if (!this.cats) this.getAllType(); // 看是否有分类信息，没有则调用接口获取
+		// if (!this.ranks) this.getAllRank(); // 看是否有排行榜分类信息，没有则调用接口获取
   },
   
   mounted () {

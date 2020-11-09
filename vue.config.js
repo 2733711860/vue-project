@@ -10,24 +10,7 @@ module.exports = {
   lintOnSave: false,
   devServer: {
   	open: true,
-  	port: 8080,
-    // 代理
-	  proxy: {
-				// 只要请求地址有'api'都会匹配上
-			"/api": {
-				 target: "http://api.zhuishushenqi.com",
-				 // 允许跨域
-				 changeOrigin: true,
-				 pathRewrite: {'^/api' : '/'},
-			},
-			'/chapter': {
-			  target: 'http://chapter2.zhuishushenqi.com',
-			  changeOrigin: true,
-			  pathRewrite: {
-			    '^/content': '/'
-			  }
-			}
-	  }
+  	port: 8080
   },
   // 配置css前缀,px转rem
   css: {

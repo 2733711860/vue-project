@@ -23,7 +23,9 @@ import {
   Tag,
   Lazyload,
 	Tabbar,
-	TabbarItem
+	TabbarItem,
+	Sidebar,
+	SidebarItem
 } from "vant";
 
 Vue.use(Icon);
@@ -50,3 +52,5 @@ Vue.use(Tag);
 Vue.use(Lazyload);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
+Vue.use(Sidebar);
+Vue.use(SidebarItem);

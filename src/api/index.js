@@ -34,3 +34,16 @@ export const search = (query) => get(`/api/book/fuzzy-search?query=${query}`) //
 export const getHotWords = () => get(`/api/book/search-hotwords`) // 获取搜索热词
 
 export const autoComplete = (query) => get(`/api/book/auto-complete?query=${query}`) // 搜索自动补充
+
+
+
+
+
+// export const baseUrl = 'http://localhost:8080'
+export const baseUrl = 'https://www.fastmock.site/mock/f5b0436d25760cd9e4b88fdf3de4d459/api'
+
+export const getBookList = params => get(`${baseUrl}/book/getBook`, params) // 获取书籍
+
+export const getBookChapter = params => get(`${baseUrl}/book/chapter`, params) // 获取章节
+
+export const getBookContent = params => get(`${baseUrl}/book/content`, params) // 获取正文
