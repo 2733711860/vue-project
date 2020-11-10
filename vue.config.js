@@ -10,7 +10,9 @@ module.exports = {
   lintOnSave: false,
   devServer: {
   	open: true,
-  	port: 8080
+  	port: 8080,
+		sockHost: 'http://localhost:8080',
+		disableHostCheck: true
   },
   // 配置css前缀,px转rem
   css: {

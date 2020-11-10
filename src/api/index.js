@@ -7,8 +7,8 @@
  */
 import { get } from './http.js'
 
-// export const baseUrl = 'http://localhost:8080'
-export const baseUrl = 'https://www.fastmock.site/mock/f5b0436d25760cd9e4b88fdf3de4d459/api'
+export const baseUrl = 'http://localhost:8080'
+// export const baseUrl = 'https://www.fastmock.site/mock/f5b0436d25760cd9e4b88fdf3de4d459/api'
 
 export const getBookList = params => get(`${baseUrl}/book/getBook`, params) // 获取书籍
 

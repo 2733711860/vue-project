@@ -48,6 +48,9 @@ export const setCacheBooks = function({ commit, state }, books) {
 			isOnShelf: books.isOnShelf ? books.isOnShelf : '0', // 0:未放入书架，1:已放入
 			chapters: books.chapters ? books.chapters : [],
 			currentChapterIndex: 0,
+			cacheStartOrigin: -1,
+			cacheStart: -1,
+			cacheEnd: -1,
 			hasReadChapterList: []
 		})
 		copyBooks.push(thisBook)
@@ -63,6 +66,9 @@ export const setCacheBooks = function({ commit, state }, books) {
 				item.chaptersCount = books.chaptersCount ? books.chaptersCount : item.chaptersCount
 				item.isOnShelf = books.isOnShelf ? books.isOnShelf : item.isOnShelf
 				item.chapters = books.chapters ? books.chapters : item.chapters
+				item.cacheStartOrigin = (books.cacheStartOrigin || books.cacheStartOrigin == 0) ? books.cacheStartOrigin : item.cacheStartOrigin
+				item.cacheStart = (books.cacheStart || books.cacheStart == 0) ? books.cacheStart : item.cacheStart
+				item.cacheEnd = (books.cacheEnd || books.cacheEnd == 0) ? books.cacheEnd : item.cacheEnd
 				item.currentChapterIndex = (books.currentChapterIndex || books.currentChapterIndex == 0) ? books.currentChapterIndex : item.currentChapterIndex
 			}
 		})

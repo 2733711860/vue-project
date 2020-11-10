@@ -1,7 +1,8 @@
 <template>
-	<div>
+	<div class="shelf-page">
 		<van-empty description="书架空空如也~~~" v-if="shelfBooks.length == 0" />
 		<reader-shelf-item-book
+			class="book-shelf"
 			v-for="(item, index) in shelfBooks"
 			:key="index + 'shelf'"
 			:bookBasic="item"
@@ -38,5 +39,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped="scoped" lang="less">
+	.shelf-page{
+		padding-top: 10px;
+	}
+	.book-shelf{
+		background-color: #FFFFFF;
+	}
 </style>

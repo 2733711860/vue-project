@@ -95,6 +95,15 @@ export default [
 					keepAlive: true,
 					rank: 2
 		    }
+	    }, {
+	      path: '/book/download',
+	      name: 'book/download',
+	      component: resolve => {
+		      require(['@/views/book/shelf/download-page.vue'], resolve)
+		    },
+		    meta: {
+		    	title: '缓存管理'
+		    }
 	    }
     ]
   }

@@ -4,20 +4,27 @@
 		<div class="module-book-content">
 			<h1>{{bookBasic.bookName}}</h1>
 			<div class="desc">
-				<div>更新时间：{{bookBasic.updatedTime}}</div>
+				<div>更新时间：{{bookBasic.updatedTime | changeTime}}</div>
 				<div>最新章节：{{bookBasic.lastChapter}}</div>
-				<div v-if="bookBasic.currentChapterIndex > -1">已阅读：{{bookBasic.currentChapterIndex + 1}}章</div>
+				<div v-if="bookBasic.currentChapterIndex > -1">已阅读：{{bookBasic.currentChapterIndex + 1}}章  /  共{{bookBasic.chaptersCount}}章</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
 	props: {
 		bookBasic: {
 			type: Object,
 			default: () => {}
+		}
+	},
+	
+	filters: {
+		changeTime (val) {
+			return moment(val).format('YYYY年MM月DD日 HH:mm')
 		}
 	},
 	
@@ -34,7 +41,7 @@ export default {
 		display: flex;
 		padding: 10px;
 		.module-book-pic{
-			width: 80px;
+			width: 70px;
 			height: 100px;
 			border-radius: 3px;
 		}

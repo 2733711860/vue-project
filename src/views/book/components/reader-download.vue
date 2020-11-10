@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { getBookContent } from '../../../api/index.js'
 export default {
 	data () {
 		return {
@@ -20,7 +21,9 @@ export default {
 			downloadChooseList: [
 				{ type: '1', text: '缓存后面50章' }, { type: '2', text: '缓存剩余章节' },
 				{ type: '3', text: '缓存全本' }, { type: '4', text: '查看缓存管理' }
-			]
+			],
+			startIndex: -1, // 开始缓存的索引
+			endIndex: -1, // 结束缓存的索引
 		}
 	},
 	
@@ -37,13 +40,71 @@ export default {
 		}
 	},
 	
+	computed: {
+		thisBook () { // 当前书
+			let nowBook = this.$store.getters.cacheBooks.find(item => item.bookId == this.$route.query.bookId)
+			return nowBook ? nowBook : {}
+		}
+	},
+	
 	methods: {
 		closeDownload () { // 关闭下载框
 			this.showDownload = false
 		},
 		
 		downloadThis (item) { // 下载
-			console.log(item.text + '下载功能敬请期待')
+			this.closeDownload()
+			if (item.type == '4') {
+				this.$router.push({
+					path: '/book/download'
+				})
+			} else {
+				let endIndex = item.type == '1' ? (((this.thisBook.currentChapterIndex + 50) > (this.thisBook.chapters.length - 1)) ? (this.thisBook.chapters.length - 1) : (this.thisBook.currentChapterIndex + 50)) : (this.thisBook.chapters.length - 1)
+				let startIndex = item.type == '3' ? 0 : this.thisBook.currentChapterIndex
+				this.$store.dispatch('setCacheBooks', { // 保存缓存进度
+					bookId: this.$route.query.bookId,
+					cacheStartOrigin: startIndex,
+					cacheEnd: endIndex,
+					cacheStart: startIndex
+				})
+				this.getChapterDetail(startIndex, endIndex, this.thisBook)
+			}
+		},
+		
+		getChapterDetail (startIndex, endIndex, thisBook) { // 只要当前章节index发生变化，就获取数据
+			let hasThisChapter = thisBook.hasReadChapterList.find(item => item.chapterIndex == startIndex)
+			if (hasThisChapter) { // 如果本章已经缓存过了
+				if (startIndex < endIndex) {
+					startIndex++
+					this.$store.dispatch('setCacheBooks', { // 保存缓存进度
+						bookId: this.$route.query.bookId,
+						cacheStart: startIndex
+					})
+					this.getChapterDetail(startIndex, endIndex, thisBook)
+				}
+			} else { // 本章没有缓存
+				let currentLink = thisBook.chapters[startIndex].link // 当前章节链接
+				getBookContent({
+					link: currentLink
+				}).then(res => {
+					this.$store.dispatch('setCacheBooks', { // 保存章节信息
+						bookId: this.$route.query.bookId,
+						newReadChapter: {
+							chapterIndex: startIndex,
+							chapterName: res.title,
+							chapterContent: res.cpContent ? res.cpContent : '正文获取失败！'
+						}
+					})
+					if (startIndex < endIndex) {
+						startIndex++
+						this.$store.dispatch('setCacheBooks', { // 保存缓存进度
+							bookId: this.$route.query.bookId,
+							cacheStart: startIndex
+						})
+						this.getChapterDetail(startIndex, endIndex, thisBook)
+					}
+				})
+			}
 		}
 	}
 }
