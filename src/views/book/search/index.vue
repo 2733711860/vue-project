@@ -1,7 +1,7 @@
 <template>
 	<div class="search-page">
 		<reader-search @getSearch="getSearch"></reader-search>
-		<div class="search-badge" v-if="searchResult.length == 0">
+		<div class="search-badge" v-if="!hasSearch">
 			<reader-hot-search
 			  :hotList="hotList"
 				title="搜索热词"
@@ -14,13 +14,15 @@
 				@searchHot="getSearch"></reader-hot-search>
 		</div>
 		
-		<div class="search-result" v-else>
-			<reader-item-book
-				v-for="(item, index) in searchResult"
-				:key="index"
-			  :bookBasic="item"
-				@click="goDetail(item)"
-			></reader-item-book>
+		<reader-bookList
+			 class="search-result"
+			:bookList="searchResult"
+			v-model="loading"
+			:finished="finished"
+			@loadData="loadData"
+			v-if="hasSearch"></reader-bookList>
+		<div>
+			
 		</div>
 	</div>
 </template>
@@ -28,18 +30,24 @@
 <script>
 import readerSearch from '../components/reader-search.vue'
 import readerHotSearch from '../components/reader-hot-search.vue'
-import readerItemBook from '../components/reader-item-book.vue'
-import { search, getHotWords } from '../../../api/index.js'
+import readerBookList from '../components/reader-bookList.vue'
+import { getBookList, getSearchHotKey } from '../../../api/index.js'
 import { getBook } from '../../../utils/bookUtil.js'
 export default {
 	components: {
-		readerSearch, readerHotSearch, readerItemBook
+		readerSearch, readerHotSearch, readerBookList
 	},
 	
 	data () {
 		return {
 			hotList: [], // 热搜列表
 			searchResult: [], // 搜索结果
+			hasSearch: false,
+			page: 0,
+			pageSize: 20,
+			loading: false,
+			finished: false,
+			searchKey: ''
 		}
 	},
 	
@@ -55,15 +63,32 @@ export default {
 	
 	methods: {
 		getHotWord () { // 获取热搜列表
-			getHotWords().then(res => {
-				this.hotList = res.searchHotWords.slice(0, 16)
+			this.$loading.show()
+			getSearchHotKey().then(res => {
+				this.$loading.hide()
+				this.hotList = res.list
 			})
 		},
 		
-		getSearch (value) { // 搜索接口
-			this.$store.dispatch('setHistory', value) // 保存搜索历史
-			search(value == '' ? '圣墟' : value).then(res => {
-				this.searchResult = res.books.map(getBook)
+		getSearch (value) {
+			this.hasSearch = true
+			this.searchKey = value
+		},
+		
+		getSearchs () { // 搜索接口
+			this.$store.dispatch('setHistory', this.searchKey) // 保存搜索历史
+			this.$loading.show()
+			getBookList({
+				keyWord: this.searchKey == '' ? '元尊' : this.searchKey,
+				page: this.page,
+				pageSize: this.pageSize
+			}).then(res => {
+				this.$loading.hide()
+				this.searchResult = [...this.searchResult, ...res.list]
+				this.loading = false
+				if (this.searchResult.length == res.total) { // 数据全部加载完成
+					this.finished = true
+				}
 			})
 		},
 		
@@ -71,13 +96,9 @@ export default {
 			this.$store.dispatch('setHistory', {deleteType: true}) // 保存搜索历史
 		},
 		
-		goDetail(item) {
-			this.$router.push({
-				path: '/book/bookRelate/detail',
-				query: {
-					bookId: item.bookId
-				}
-			})
+		loadData () {
+			this.page++
+			this.getSearchs()
 		}
 	}
 }

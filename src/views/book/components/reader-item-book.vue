@@ -33,7 +33,14 @@ export default {
 	
 	methods: {
 		goPage () {
-			this.$emit('click')
+			this.$store.dispatch('setCacheBooks', this.bookBasic) // 保存书籍信息
+			
+			this.$router.push({
+				path: '/book/bookRelate/detail',
+				query: {
+					bookId: this.bookBasic.bookId
+				}
+			})
 		}
 	}
 }

@@ -6,7 +6,7 @@
 		</div>
 		<div class="hot-list">
 			<span class="item-hot" v-for="(item, index) in hotList" :key="index" @click="getSearch(item)">
-				{{item.word}}
+				{{item.bookName}}
 			</span>
 		</div>
 	</div>
@@ -32,7 +32,7 @@ export default {
 	
 	methods: {
 		getSearch (item) {
-			this.$emit('searchHot', item.word)
+			this.$emit('searchHot', item.bookName)
 		},
 		
 		deleteS () { // 删除

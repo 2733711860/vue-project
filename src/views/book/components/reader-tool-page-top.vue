@@ -1,7 +1,7 @@
 <template>
 	<div :class="['tool-page-top', showTool ? 'show' : '']">
 		<div class="top-left">
-			<van-icon name="arrow-left" />
+			<van-icon name="arrow-left" @click="goBack" />
 			<span>{{this.thisBook.bookName}}</span>
 		</div>
 		<van-icon name="bookmark-o" />
@@ -32,6 +32,12 @@ export default {
 		},
 		value () {
 			this.showTool = this.value
+		}
+	},
+	
+	methods: {
+		goBack () {
+			history.go(-1)
 		}
 	}
 }

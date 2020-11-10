@@ -1,6 +1,6 @@
 <template>
 	<div class="book-head" :style="navBarStyle">
-		<van-icon name="arrow-left" />
+		<van-icon name="arrow-left" @click="goBack" />
 		<div class="head-middle">
 			<slot>
 				<h6>{{title}}</h6>
@@ -37,6 +37,10 @@ export default {
 					path: '/book/search'
 				})
 			}
+		},
+		
+		goBack () {
+			history.go(-1)
 		}
 	}
 }

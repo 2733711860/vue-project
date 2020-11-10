@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<van-empty description="书架空空如也~~~" v-if="shelfBooks.length == 0" />
 		<reader-shelf-item-book
 			v-for="(item, index) in shelfBooks"
 			:key="index + 'shelf'"
@@ -29,7 +30,7 @@ export default {
 			this.$router.push({
 				path: '/book/bookRelate/bookTxt',
 				query: {
-					bookSourceId: item.bookSourceId
+					bookId: item.bookId
 				}
 			})
 		}
