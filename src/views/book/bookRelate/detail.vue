@@ -111,11 +111,11 @@
 </template>
 
 <script>
-import readerHeaderTwo from '../../components/reader-header-two.vue'
-import readerItemBookTwo from '../../components/reader-item-book-two.vue'
-import readerComment from '../../components/reader-comment.vue'
-import { getBookChapter } from '../../../../api/index.js'
-import { getBook } from '../../../../utils/bookUtil.js'
+import readerHeaderTwo from '../components/reader-header-two.vue'
+import readerItemBookTwo from '../components/reader-item-book-two.vue'
+import readerComment from '../components/reader-comment.vue'
+import { getBookChapter } from '../../../api/index.js'
+import { getBook } from '../../../utils/bookUtil.js'
 import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
 export default {
@@ -159,12 +159,15 @@ export default {
 	
 	methods: {
 		getChapters () { // 调接口获取目录
+			this.$loading.show()
 			getBookChapter({
 				bookId: this.bookDetail.bookId
 			}).then(res => {
+				this.$loading.hide()
 				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
 					bookId: this.$route.query.bookId,
-					chapters: res.data.list
+					chapters: res.data.list,
+					chaptersCount: res.data.list.length
 				})
 			})
 		},
@@ -249,7 +252,7 @@ export default {
 	}
 	.detail-top{
 		width: 100%;
-		background: url(../../../../assets/img/14.jpg) no-repeat;
+		background: url(../../../assets/img/14.jpg) no-repeat;
 		background-size: 100% 100%;
 		display: flex;
 		padding: 50px 10px 10px;

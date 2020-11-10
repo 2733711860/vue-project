@@ -13,23 +13,23 @@
 		</div>
 		
 		<div class="rank-content">
-			<reader-item-book
-				v-for="(item, index) in bookList"
-			  :key="index + 'book'"
-				:bookBasic="item"
-				@click="goDetail(item)"
-			></reader-item-book>
+			<reader-bookList
+				v-model="loading"
+				:finished="finished"
+				:bookList="bookList"
+				@loadData="loadData"
+			></reader-bookList>
 		</div>
 	</div>
 </template>
 
 <script>
-import readerItemBook from '../../components/reader-item-book.vue'
-import { getBookList } from '../../../../api/index.js'
-import { maleRankTypeObj, femaleRankTypeObj } from '../../../../utils/bookUtil.js'
+import readerBookList from '../components/reader-bookList.vue'
+import { getBookList } from '../../../api/index.js'
+import { maleRankTypeObj, femaleRankTypeObj } from '../../../utils/bookUtil.js'
 export default {
 	components: {
-		readerItemBook
+		readerBookList
 	},
 	
 	data () {
@@ -39,6 +39,11 @@ export default {
 			bookList: [],
 			maleRankTypeList: [], // 男频排行分类列表
 			femaleRankTypeList: [], // 女频排行分类列表
+			page: 0,
+			pageSize: 20,
+			rankType: 'BR1',
+			loading: false,
+			finished: false
 		}
 	},
 	
@@ -67,33 +72,35 @@ export default {
 	},
 	
 	mounted () {
-		this.getBook()
 	},
 	
 	methods: {
 		getBook () {
+			this.$loading.show()
 			getBookList({
-				page: '1',
-				pageSize: '4',
-				bookType: '1'
+				page: this.page,
+				pageSize: this.pageSize,
+				rankType: this.rankType
 			}).then(res => {
-				this.bookList = res.list
-			})
-		},
-		
-		goDetail (item) {
-			this.$store.dispatch('setCacheBooks', item) // 保存书籍信息
-			
-			this.$router.push({
-				path: '/book/bookRelate/detail',
-				query: {
-					bookId: item.bookId
+				this.$loading.hide()
+				this.bookList = [...this.bookList, ...res.list]
+				this.loading = false
+				if (this.bookList.length == res.total) { // 数据全部加载完成
+					this.finished = true
 				}
 			})
 		},
 		
-		onChange (item) {
-			console.log(item)
+		onChange (item) { // 点击左侧切换排行榜
+			this.rankType = item.value
+			this.page = 0
+			this.bookList = []
+			this.finished = false
+		},
+		
+		loadData () {
+			this.page++
+			this.getBook()
 		}
 	}
 }
