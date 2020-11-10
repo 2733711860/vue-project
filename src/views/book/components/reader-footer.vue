@@ -8,15 +8,21 @@
 			  </router-link>
 			</li>
 	    <li class="item">
-	      <router-link to="/book/home" class="flex2" active-class="active">
+	      <router-link to="/book/home/index" class="flex2" active-class="active">
 					<i class="iconfont book text"></i>
 	        <p class="text menuText">书城</p>
 	      </router-link>
 	    </li>
+			<li class="item">
+			  <router-link to="/book/home/rank" class="flex2" active-class="active">
+					<i class="iconfont rank text"></i>
+			    <p class="text menuText">榜单</p>
+			  </router-link>
+			</li>
 	    <li class="item">
-	      <router-link to="/book/search" class="flex2" active-class="active">
-	        <van-icon class="text" name="search"></van-icon>
-	        <p class="text menuText">搜索</p>
+	      <router-link to="/book/home/classify" class="flex2" active-class="active">
+	        <i class="iconfont classify text"></i>
+	        <p class="text menuText">分类</p>
 	      </router-link>
 	    </li>
 	    <li class="item">

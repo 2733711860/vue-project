@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { getAllCats, getRanks } from './api/index.js'
 import readerChapter from './views/book/components/reader-chapter.vue'
 export default {
   name: "app",
@@ -19,35 +18,16 @@ export default {
 	computed: {
 		isShowMenu () {
 			return this.$store.getters.isShowMenu
-		},
-		cats () {
-			return this.$store.getters.cats
-		},
-		ranks () {
-			return this.$store.getters.ranks
 		}
 	},
 	
   created() {
-		// if (!this.cats) this.getAllType(); // 看是否有分类信息，没有则调用接口获取
-		// if (!this.ranks) this.getAllRank(); // 看是否有排行榜分类信息，没有则调用接口获取
   },
   
   mounted () {
   },
 
   methods: {
-		getAllType () {
-			getAllCats().then(res => {
-				this.$store.dispatch("setCats", res);
-			})
-		},
-		
-		getAllRank () {
-			getRanks().then(res => {
-				this.$store.dispatch("setRanks", res);
-			})
-		}
   }
 }
 </script>

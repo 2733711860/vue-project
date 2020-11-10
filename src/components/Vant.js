@@ -25,7 +25,8 @@ import {
 	Tabbar,
 	TabbarItem,
 	Sidebar,
-	SidebarItem
+	SidebarItem,
+	Empty
 } from "vant";
 
 Vue.use(Icon);
@@ -54,3 +55,4 @@ Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Sidebar);
 Vue.use(SidebarItem);
+Vue.use(Empty);

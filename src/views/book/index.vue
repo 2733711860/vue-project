@@ -18,7 +18,7 @@ export default {
 }
 </script>
 
-<style scoped="scoped">
+<style scoped="scoped" lang="less">
 	.book-page{
 		display: flex;
 		flex-direction: column;

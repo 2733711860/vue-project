@@ -27,7 +27,7 @@ export const setHistory = function({ commit, state }, history) {
 		return
 	}
 	let copyList = [...state.historyList] // 拷贝一份
-	let haveIndex = copyList.findIndex(val => val.word == history)
+	let haveIndex = copyList.findIndex(val => val.bookName == history)
 	let isHave = haveIndex == -1 ? false : true // 历史中是否有这个记录
 	if (isHave) { // 有这个记录则删除它
 		copyList.splice(haveIndex, 1)
@@ -35,7 +35,7 @@ export const setHistory = function({ commit, state }, history) {
 	if (copyList.length == 20) { // 最多保存20条历史记录
 		copyList.pop()
 	}
-	copyList.unshift({word: history})
+	copyList.unshift({bookName: history})
 	commit(types.SET_HISTORYLIST, copyList)
 }
 
@@ -60,6 +60,7 @@ export const setCacheBooks = function({ commit, state }, books) {
 						return a.chapterIndex < b.chapterIndex ? '-1' : '1'
 					})
 				}
+				item.chaptersCount = books.chaptersCount ? books.chaptersCount : item.chaptersCount
 				item.isOnShelf = books.isOnShelf ? books.isOnShelf : item.isOnShelf
 				item.chapters = books.chapters ? books.chapters : item.chapters
 				item.currentChapterIndex = (books.currentChapterIndex || books.currentChapterIndex == 0) ? books.currentChapterIndex : item.currentChapterIndex

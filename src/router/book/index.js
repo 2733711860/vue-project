@@ -6,81 +6,63 @@ export default [
   {
     path: '/book',
     component: resolve => { require(['@/views/book/index.vue'], resolve) },
-    redirect: '/book/home',
+    redirect: '/book/shelf',
     children: [
-    	{
-	      path: '/book/home',
-	      component: resolve => {
-		      require(['@/views/book/home/index.vue'], resolve)
-		    },
-				redirect: '/book/home/index',
-				children: [
-					{
-						path: '/book/home/index',
-						name: 'book/home/index',
-						component: resolve => {
-						  require(['@/views/book/home/children/index.vue'], resolve)
-						},
-						meta: {
-							title: '书城',
-							showTop: true,
-							rank: 1
-						}
-					}, {
-						path: '/book/home/rank',
-						name: 'book/home/rank',
-						component: resolve => {
-						  require(['@/views/book/home/children/rank.vue'], resolve)
-						},
-						meta: {
-							title: '榜单',
-							showTop: true,
-							rank: 1
-						}
-					}, {
-						path: '/book/home/classify',
-						name: 'book/home/classify',
-						component: resolve => {
-						  require(['@/views/book/home/children/classify.vue'], resolve)
-						},
-						meta: {
-							title: '分类',
-							showTop: true,
-							rank: 1
-						}
-					}
-				]
-	    }, {
-	      path: '/book/bookRelate',
-	      component: resolve => {
-		      require(['@/views/book/bookRelate/index.vue'], resolve)
-		    },
-				redirect: '/book/bookRelate/detail',
-				children: [
-					{
-						path: '/book/bookRelate/detail',
-						name: 'book/bookRelate/detail',
-						component: resolve => {
-						  require(['@/views/book/bookRelate/children/detail.vue'], resolve)
-						},
-						meta: {
-							title: '书名',
-							keepAlive: true,
-							rank: 3
-						}
-					}, {
-						path: '/book/bookRelate/bookTxt',
-						name: 'book/bookRelate/bookTxt',
-						component: resolve => {
-						  require(['@/views/book/bookRelate/children/bookTxt.vue'], resolve)
-						},
-						meta: {
-							title: '书籍文本',
-							rank: 4
-						}
-					}
-				]
-	    }, {
+			{
+				path: '/book/home/index',
+				name: 'book/home/index',
+				component: resolve => {
+					require(['@/views/book/home/index.vue'], resolve)
+				},
+				meta: {
+					title: '书城',
+					showTop: true,
+					rank: 1
+				}
+			}, {
+				path: '/book/home/rank',
+				name: 'book/home/rank',
+				component: resolve => {
+					require(['@/views/book/home/rank.vue'], resolve)
+				},
+				meta: {
+					title: '榜单',
+					showTop: true,
+					rank: 1
+				}
+			}, {
+				path: '/book/home/classify',
+				name: 'book/home/classify',
+				component: resolve => {
+					require(['@/views/book/home/classify.vue'], resolve)
+				},
+				meta: {
+					title: '分类',
+					showTop: true,
+					rank: 1
+				}
+			}, {
+				path: '/book/bookRelate/detail',
+				name: 'book/bookRelate/detail',
+				component: resolve => {
+					require(['@/views/book/bookRelate/detail.vue'], resolve)
+				},
+				meta: {
+					title: '书名',
+					keepAlive: true,
+					rank: 3
+				}
+			}, {
+				path: '/book/bookRelate/bookTxt',
+				name: 'book/bookRelate/bookTxt',
+				component: resolve => {
+					require(['@/views/book/bookRelate/bookTxt.vue'], resolve)
+				},
+				meta: {
+					title: '书籍文本',
+					rank: 4
+				}
+			}, {
 	      path: '/book/center',
 	      name: 'book/center',
 	      component: resolve => {
@@ -110,7 +92,6 @@ export default [
 		    },
 		    meta: {
 		    	title: '搜索',
-					showTop: false,
 					keepAlive: true,
 					rank: 2
 		    }
