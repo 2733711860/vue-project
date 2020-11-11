@@ -1,7 +1,7 @@
 <template>
 	<div :class="['tool-page-download', showDownload ? 'show' : '']">
 		<div class="download-div">
-			<div class="title">官居一品</div>
+			<div class="title">{{thisBook.bookName}}</div>
 			<div class="item"
 				v-for="(item, index) in downloadChooseList" 
 				:key="index + 'down'"
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { getBookContent } from '../../../api/index.js'
+import transferUtil from '../../../utils/middle-transfer.js'
 export default {
 	data () {
 		return {
@@ -65,47 +65,12 @@ export default {
 					bookId: this.$route.query.bookId,
 					cacheStartOrigin: startIndex,
 					cacheEnd: endIndex,
-					cacheStart: startIndex
+					cacheStart: startIndex,
+					cacheState: '1'
 				})
-				this.getChapterDetail(startIndex, endIndex, this.thisBook)
+				transferUtil.$emit('testDemo', startIndex, endIndex, this.thisBook)
 			}
 		},
-		
-		getChapterDetail (startIndex, endIndex, thisBook) { // 只要当前章节index发生变化，就获取数据
-			let hasThisChapter = thisBook.hasReadChapterList.find(item => item.chapterIndex == startIndex)
-			if (hasThisChapter) { // 如果本章已经缓存过了
-				if (startIndex < endIndex) {
-					startIndex++
-					this.$store.dispatch('setCacheBooks', { // 保存缓存进度
-						bookId: this.$route.query.bookId,
-						cacheStart: startIndex
-					})
-					this.getChapterDetail(startIndex, endIndex, thisBook)
-				}
-			} else { // 本章没有缓存
-				let currentLink = thisBook.chapters[startIndex].link // 当前章节链接
-				getBookContent({
-					link: currentLink
-				}).then(res => {
-					this.$store.dispatch('setCacheBooks', { // 保存章节信息
-						bookId: this.$route.query.bookId,
-						newReadChapter: {
-							chapterIndex: startIndex,
-							chapterName: res.title,
-							chapterContent: res.cpContent ? res.cpContent : '正文获取失败！'
-						}
-					})
-					if (startIndex < endIndex) {
-						startIndex++
-						this.$store.dispatch('setCacheBooks', { // 保存缓存进度
-							bookId: this.$route.query.bookId,
-							cacheStart: startIndex
-						})
-						this.getChapterDetail(startIndex, endIndex, thisBook)
-					}
-				})
-			}
-		}
 	}
 }
 </script>

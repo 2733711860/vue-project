@@ -1,5 +1,5 @@
 <template>
-	<div class="item-book">
+	<div class="item-book" @click="gothis">
 		<img :src="bookDetail.bookImg" />
 		<div>{{bookDetail.bookName}}</div>
 	</div>
@@ -11,6 +11,12 @@ export default {
 		bookDetail: {
 			type: Object,
 			default: () => {}
+		}
+	},
+	
+	methods: {
+		gothis () {
+			this.$emit('click')
 		}
 	}
 }

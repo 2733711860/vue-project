@@ -1,7 +1,7 @@
 <template>
 	<div :class="['tool-page-setting', showS ? 'show' : '']">
 		<div class="brights">
-			<i class="iconfont bright"></i>
+			<i class="iconfont iconbright"></i>
 			<van-slider
 				class="slider"
 				v-model="currentBright"
@@ -18,12 +18,12 @@
 		
 		<div class="fontSet">
 			<div class="font-btn" @click="changeFontSize('-')">
-				<i class="iconfont ziti"></i>
+				<i class="iconfont iconziti"></i>
 				<span>-</span>
 			</div>
 			<span class="font-value">{{setting.fontSize}}</span>
 			<div class="font-btn" @click="changeFontSize('+')">
-				<i class="iconfont ziti"></i>
+				<i class="iconfont iconziti"></i>
 				<span>+</span>
 			</div>
 			<span class="defau" @click="changeFontSize()">默认</span>

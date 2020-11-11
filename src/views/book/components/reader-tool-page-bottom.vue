@@ -1,40 +1,40 @@
 <template>
 	<div :class="['tool-page-bottom', showTool ? 'show' : '']">
 		<div class="slider-div">
-			<span @click="nextChapters">上一章</span>
+			<span @click="prevChapters">上一章</span>
 			<van-slider
 				class="slider"
 				v-model="currentPaging"
 				min='0'
 				:max="resultPaging"
-				@change="onChange"
+				disabled
 			>
 				<template #button>
 					<div class="custom-button"></div>
 				</template>
 			</van-slider>
-			<span @click="prevChapters">下一章</span>
+			<span @click="nextChapters">下一章</span>
 		</div>
 		
 		<div class="tool-btn-div">
 			<div class="item-tool" @click="openMenu">
-				<i class="iconfont mulu icon1"></i>
+				<i class="iconfont iconmulu icon1"></i>
 				<div>目录</div>
 			</div>
 			<div :class="['item-tool', setting.dayNight == 'night' ? 'active' : '']" @click="changeDayNight">
-				<i class="iconfont yejian icon"></i>
+				<i class="iconfont iconyejian icon"></i>
 				<div>夜间</div>
 			</div>
 			<div class="item-tool" @click="openDownload">
-				<i class="iconfont download icon"></i>
+				<i class="iconfont icondownload icon"></i>
 				<div>缓存</div>
 			</div>
 			<div class="item-tool">
-				<i class="iconfont huan icon"></i>
+				<i class="iconfont iconhuan icon"></i>
 				<div>换源</div>
 			</div>
 			<div class="item-tool" @click="openSetting">
-				<i class="iconfont ziti icon"></i>
+				<i class="iconfont iconziti icon"></i>
 				<div>设置</div>
 			</div>
 		</div>
@@ -77,10 +77,6 @@ export default {
 	},
 	
 	methods: {
-		onChange (val) { // 切换页数
-			console.log('敬请期待')
-		},
-		
 		prevChapters () { // 下一章
 			this.$emit('prevChapter', true)
 		},
