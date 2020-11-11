@@ -71,16 +71,15 @@
 					<span></span>
 					<div>作者的其他作品</div>
 				</div>
-				<div class="module-top-right">
-					<span>更多</span>
-					<van-icon name="arrow" />
-				</div>
 			</div>
 			
 			<div class="book-list">
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two
+					class="item-book"
+					v-for="(item, index) in authorBooks"
+					:key="index + 'author'"
+					:bookDetail="item"
+					@click="getThis(item)"></reader-item-book-two>
 			</div>
 		</div>
 		
@@ -96,10 +95,12 @@
 			</div>
 			
 			<div class="book-list">
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
-				<reader-item-book-two class="item-book" :bookDetail="bookDetail"></reader-item-book-two>
+				<reader-item-book-two
+					class="item-book"
+					v-for="(item, index) in likeBooks"
+					:key="index + 'like'"
+					:bookDetail="item"
+					@click="getThis(item)"></reader-item-book-two>
 			</div>
 		</div>
 		
@@ -114,8 +115,7 @@
 import readerHeaderTwo from '../components/reader-header-two.vue'
 import readerItemBookTwo from '../components/reader-item-book-two.vue'
 import readerComment from '../components/reader-comment.vue'
-import { getBookChapter } from '../../../api/index.js'
-import { getBook } from '../../../utils/bookUtil.js'
+import { getBookChapter, getBookList } from '../../../api/index.js'
 import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
 export default {
@@ -132,7 +132,10 @@ export default {
 			},
 			scrollTopValue: -1, // 滚动距顶部的距离
 			title: '书籍信息',
-			showAll: false // 简介是否显示全部
+			showAll: false, // 简介是否显示全部
+			authorBooks: [], // 作者的所有作品
+			likeBooks: [], // 猜你喜欢（同类型作品）
+			bookId: this.$route.query.bookId
 		}
 	},
 	
@@ -144,7 +147,7 @@ export default {
 	
 	computed: {
 		bookDetail () { // 当前书
-			let books = this.$store.getters.cacheBooks.find(item => item.bookId == this.$route.query.bookId) // 缓存中是否有此书
+			let books = this.$store.getters.cacheBooks.find(item => item.bookId == this.bookId) // 缓存中是否有此书
 			return books ? books : {}
 		},
 		isOnShelf () { // 是否放入书架
@@ -153,8 +156,11 @@ export default {
 	},
 	
 	created () {
-		this.$store.dispatch('setBookSourceId', this.$route.query.bookId)
+		this.$store.dispatch('setBookSourceId', this.bookId)
 		this.getChapters()
+		this.getLikeList()
+		this.getAuthorBooks()
+		console.log(1212)
 	},
 	
 	methods: {
@@ -165,7 +171,7 @@ export default {
 			}).then(res => {
 				this.$loading.hide()
 				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
-					bookId: this.$route.query.bookId,
+					bookId: this.bookDetail.bookId,
 					chapters: res.data.list,
 					chaptersCount: res.data.list.length
 				})
@@ -203,6 +209,46 @@ export default {
 				bookId: this.bookDetail.bookId,
 				isOnShelf: this.isOnShelf == '0' ? '1' : '0'
 			})
+		},
+		
+		getLikeList () { // 猜你喜欢
+			this.$loading.show()
+			getBookList({
+				bookType: this.bookDetail.bookType,
+				guessLike: '1' // 只要有这个字段就行
+			}).then(res => {
+				this.$loading.hide()
+				this.likeBooks = res.list
+			})
+		},
+		
+		getAuthorBooks () { // 作者所有作品
+			this.$loading.show()
+			getBookList({
+				bookAuthor: this.bookDetail.bookAuthor
+			}).then(res => {
+				this.$loading.hide()
+				this.authorBooks = res.list
+			})
+		},
+		
+		getThis (item) { // 点击其他书籍
+			if (this.isOnShelf == '0') { // 不在书架中，则删除本书缓存
+				this.$store.dispatch('deleteCasheBooks', {
+					bookId: this.bookDetail.bookId
+				})
+			}
+			this.$store.dispatch('setCacheBooks', item) // 保存书籍信息
+			this.bookId = item.bookId
+			this.$store.dispatch('setBookSourceId', this.bookId) // 保存当前书籍id
+			$(".detail-page").animate({
+				scrollTop: 0
+			}, 0)
+			const newUrl = `/#${this.$route.path}?bookId=${this.bookId}`
+			window.history.replaceState('', '', newUrl)
+			this.getChapters() // 获取章节
+			this.getLikeList()
+			this.getAuthorBooks()
 		}
 	},
 	

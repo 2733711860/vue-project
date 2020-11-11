@@ -51,6 +51,7 @@ export const setCacheBooks = function({ commit, state }, books) {
 			cacheStartOrigin: -1,
 			cacheStart: -1,
 			cacheEnd: -1,
+			cacheState: '2', // 1：正在缓存，2：缓存暂停，3：缓存完成
 			hasReadChapterList: []
 		})
 		copyBooks.push(thisBook)
@@ -68,7 +69,8 @@ export const setCacheBooks = function({ commit, state }, books) {
 				item.chapters = books.chapters ? books.chapters : item.chapters
 				item.cacheStartOrigin = (books.cacheStartOrigin || books.cacheStartOrigin == 0) ? books.cacheStartOrigin : item.cacheStartOrigin
 				item.cacheStart = (books.cacheStart || books.cacheStart == 0) ? books.cacheStart : item.cacheStart
-				item.cacheEnd = (books.cacheEnd || books.cacheEnd == 0) ? books.cacheEnd : item.cacheEnd
+				item.cacheEnd = (books.cacheEnd || books.cacheEnd == 0) ? books.cacheEnd : item.cacheEnd,
+				item.cacheState = books.cacheState ? books.cacheState : item.cacheState
 				item.currentChapterIndex = (books.currentChapterIndex || books.currentChapterIndex == 0) ? books.currentChapterIndex : item.currentChapterIndex
 			}
 		})

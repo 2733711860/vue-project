@@ -17,7 +17,6 @@ const state = {
 		turnPageMode: 3, // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
 		backgroundColor: 'rgba(236, 216, 179, 1)' // 阅读背景颜色
 	},
-	keepAliveList: ['book/bookRelate/detail', 'book/search'],
 }
 
 export default state

@@ -26,11 +26,6 @@ const mutations = {
 	  state.historyList = historyList
 	},
 	
-	// 搜索历史
-	[types.SET_KEEPALIVELIST](state, keepAliveList) {
-	  state.keepAliveList = keepAliveList
-	},
-	
 	// 已缓存书籍列表
 	[types.SET_CACHEBOOKS](state, cacheBooks) {
 	  state.cacheBooks = cacheBooks

@@ -2,14 +2,14 @@
 	<div :class="['tool-page-menu', showMenu ? 'show' : '']">
 		<div class="menu-div">
 			<div class="menu-top">
-				<div>官居一品</div>
-				<i class="iconfont paixu"></i>
+				<div>{{thisBook.bookName}}</div>
+				<i class="iconfont iconpaixu"></i>
 			</div>
 			
 			<div class="menu-content">
 				<div class="item-chapter"v-for="(item, index) in thisBook.chapters" @click="setChapter(index)">
-					<i class="iconfont deng" v-if="thisBook.currentChapterIndex == index"></i>
-					<i class="iconfont dian" v-else
+					<i class="iconfont icondeng" v-if="thisBook.currentChapterIndex == index"></i>
+					<i class="iconfont icondian" v-else
 						:style="{color: (thisBook.hasReadChapterList.find(item => item.chapterIndex == index) ? '#07C160': '#d5d5d5')}"></i>
 					<div :style="{color: (thisBook.currentChapterIndex == index ? '#f80000' : '')}">{{item.title}}</div>
 				</div>
