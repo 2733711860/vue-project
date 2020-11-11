@@ -172,8 +172,8 @@ export default {
 		},
 		
 		nextChapter () { // 下一章
-			if (this.currentIndex == this.bookSourceLinks.length -1) { // 最后一章
-				Toast('最后一章最后一页')
+			if (this.currentIndex == this.thisBook.chapters.length -1) { // 最后一章
+				Toast('最后一章')
 			} else {
 				this.currentIndex++
 			}
@@ -181,7 +181,7 @@ export default {
 		
 		prevChapter (isTool) { // 上一章
 			if (this.currentIndex == 0) { // 第一章
-				Toast('第一章第一页')
+				Toast('第一章')
 			} else {
 				this.currentIndex--
 				if (this.pagingPattern == 1 || this.pagingPattern == 2 || this.pagingPattern == 3) {
@@ -314,24 +314,16 @@ export default {
 		}
 	},
 	
-	beforeRouteLeave (to, from, next) {
-		if (this.thisBook.isOnShelf == '0') { // 还没有加入书架，则离开页面时删除缓存书籍
-			Dialog.confirm({
-			  title: '标题',
-			  message: '将本书加入书架？',
-			}).then(() => {
-				this.$store.dispatch('setCacheBooks', {
-					bookId: this.$route.query.bookId,
-					isOnShelf: '1'
-				})
-				next()
-			}).catch(() => {
-				next()
-			})
-		} else {
-			next()
-		}
-	}
+	// beforeRouteLeave (to, from, next) {
+	// 	if (this.thisBook.isOnShelf == '0' && to.name != 'book/download') { // 还没有加入书架，则离开页面时删除缓存书籍
+	// 		this.$store.dispatch('deleteCasheBooks', {
+	// 			bookId: this.$route.query.bookId
+	// 		})
+	// 		next()
+	// 	} else {
+	// 		next()
+	// 	}
+	// }
 }
 </script>
 

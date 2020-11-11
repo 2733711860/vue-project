@@ -55,6 +55,10 @@ export default {
 		downloadThis (item) { // 下载
 			this.closeDownload()
 			if (item.type == '4') {
+				this.$store.dispatch('setCacheBooks', { // 只要选择进入下载页面，则加入书架
+					bookId: this.$route.query.bookId,
+					isOnShelf: '1'
+				})
 				this.$router.push({
 					path: '/book/download'
 				})

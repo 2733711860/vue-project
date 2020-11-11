@@ -160,7 +160,6 @@ export default {
 		this.getChapters()
 		this.getLikeList()
 		this.getAuthorBooks()
-		console.log(1212)
 	},
 	
 	methods: {
@@ -212,22 +211,18 @@ export default {
 		},
 		
 		getLikeList () { // 猜你喜欢
-			this.$loading.show()
 			getBookList({
 				bookType: this.bookDetail.bookType,
 				guessLike: '1' // 只要有这个字段就行
 			}).then(res => {
-				this.$loading.hide()
 				this.likeBooks = res.list
 			})
 		},
 		
 		getAuthorBooks () { // 作者所有作品
-			this.$loading.show()
 			getBookList({
 				bookAuthor: this.bookDetail.bookAuthor
 			}).then(res => {
-				this.$loading.hide()
 				this.authorBooks = res.list
 			})
 		},
