@@ -26,7 +26,9 @@ import {
 	TabbarItem,
 	Sidebar,
 	SidebarItem,
-	Empty
+	Empty,
+	SwipeCell,
+	NoticeBar
 } from "vant";
 
 Vue.use(Icon);
@@ -56,3 +58,5 @@ Vue.use(TabbarItem);
 Vue.use(Sidebar);
 Vue.use(SidebarItem);
 Vue.use(Empty);
+Vue.use(SwipeCell);
+Vue.use(NoticeBar);

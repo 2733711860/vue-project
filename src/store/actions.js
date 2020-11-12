@@ -86,24 +86,24 @@ export const deleteCasheBooks = ({ commit, state }, bookId) => {
 	commit(types.SET_CACHEBOOKS, copyBooks)
 }
 
-// cacheBooks[
-// 	{
-// 		bookId: '',
-// 		bookName: '',
-// 		bookImg: '', // 书籍封面
-// 		isOnShelf: false, // 是否放入书架
-//    updatedTime: '', // 最近更新时间
-//		lastChapter: '', // 最新章节
-// 		chapters: [], // 章节列表
-// 		currentChapterIndex: -1, // 当前阅读章节索引
-// 		newReadChapter: { // 新缓存的章节
-//			chapterIndex: '', // 本章节索引
-// 			chapterName: '',
-// 			chapterLink: '', // 章节链接
-// 			chapterContent: '' // 章节内容
-// 		}
-// 	}
-// ]
+// 加入、移除书架
+export const inOutShelf = ({ commit, state }, bookId) => {
+	let copyBooks = [...state.cacheBooks] // 拷贝一份
+	let thisBook = copyBooks.find(item => item.bookId == bookId.bookId) // 当前操作的书籍
+	if (thisBook.isOnShelf == '0') { // 还未放入书架，此时的操作是加入书架
+		copyBooks.forEach(item => {
+			if (item.bookId == bookId.bookId) {
+				item.isOnShelf = '1'
+			}
+		})
+	} else { // 已经在书架，此时的操作是移除书架（缓存中删除本书）
+		let thisIndex = copyBooks.findIndex(item => item.bookId == bookId.bookId)
+		copyBooks.splice(thisIndex, 1)
+	}
+	commit(types.SET_CACHEBOOKS, copyBooks)
+}
+
+
 
 // 页面设置信息
 export const setSetting = function({ commit, state }, settings) {
@@ -114,16 +114,7 @@ export const setSetting = function({ commit, state }, settings) {
 	copySetting.turnPageMode = (settings.turnPageMode || settings.turnPageMode == 0) ? settings.turnPageMode : copySetting.turnPageMode
 	copySetting.backgroundColor = settings.backgroundColor ? settings.backgroundColor : copySetting.backgroundColor
 	copySetting.dayNight = settings.dayNight ? settings.dayNight : copySetting.dayNight
-	copySetting.bookSource = settings.bookSource ? settings.bookSource : copySetting.bookSource
+	copySetting.bookSource = settings.bookSource ? settings.bookSource : copySetting.bookSource,
+	copySetting.shelfTheme = settings.shelfTheme ? settings.shelfTheme : copySetting.shelfTheme
   commit(types.SET_SETTING, copySetting)
 }
-
-// setting{
-// 	dayNight: 'day', // day:日间模式  night:夜间模式,
-// 	bookSource: '', // 当前小说源(换源)
-// 	light: 1, // 亮度
-// 	fontSize: 14, // 字体大小
-// 	tightness: '4', // 1:紧凑  2:舒适  3:松散  4:默认
-// 	turnPageMode: '3', // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
-// 	readBg: 'rgb(238, 230, 221)' // 阅读背景颜色
-// }

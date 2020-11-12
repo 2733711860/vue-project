@@ -89,7 +89,7 @@
 					<span></span>
 					<div>猜你喜欢</div>
 				</div>
-				<div class="module-top-right">
+				<div class="module-top-right" @click="getLikeList">
 					<span>换一换</span>
 				</div>
 			</div>
@@ -204,9 +204,8 @@ export default {
 		},
 		
 		shelfFunc () { // 加入书架、移除书架
-			this.$store.dispatch('setCacheBooks', {
-				bookId: this.bookDetail.bookId,
-				isOnShelf: this.isOnShelf == '0' ? '1' : '0'
+			this.$store.dispatch('inOutShelf', {
+				bookId: this.bookDetail.bookId
 			})
 		},
 		
