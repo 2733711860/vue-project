@@ -42,7 +42,7 @@ export default {
 		return {
 			hotList: [], // 热搜列表
 			searchResult: [], // 搜索结果
-			hasSearch: false,
+			hasSearch: false, // 已经搜索了
 			page: 0,
 			pageSize: 20,
 			loading: false,
@@ -73,6 +73,10 @@ export default {
 		getSearch (value) {
 			this.hasSearch = true
 			this.searchKey = value
+			this.searchResult = []
+			this.page = 0
+			this.finished = false
+			this.getSearchs()
 		},
 		
 		getSearchs () { // 搜索接口

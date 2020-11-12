@@ -96,6 +96,7 @@ export default {
 			this.page = 0
 			this.bookList = []
 			this.finished = false
+			this.getBook()
 		},
 		
 		loadData () {

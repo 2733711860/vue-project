@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { Toast } from 'vant'
 export default {
 	data () {
 		return {
@@ -128,7 +129,7 @@ export default {
 		
 		changeMode (item) { // 切换翻页模式
 		  if (item.value == '4') {
-				console.log('暂未实现')
+				Toast('敬请期待！')
 				return
 			}
 			this.$store.dispatch('setSetting', {

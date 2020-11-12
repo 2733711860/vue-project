@@ -4,11 +4,12 @@
 			<van-icon name="arrow-left" @click="goBack" />
 			<span>{{this.thisBook.bookName}}</span>
 		</div>
-		<van-icon name="bookmark-o" />
+		<van-icon name="bookmark-o" @click="addMark()" />
 	</div>
 </template>
 
 <script>
+import { Toast } from 'vant'
 export default {
 	data () {
 		return {
@@ -38,6 +39,10 @@ export default {
 	methods: {
 		goBack () {
 			history.go(-1)
+		},
+		
+		addMark () {
+			Toast('敬请期待！')
 		}
 	}
 }

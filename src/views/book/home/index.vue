@@ -107,8 +107,7 @@ export default {
 		getYouLike () { // 猜你喜欢，默认起点月票榜
 			this.$loading.show()
 			getBookList({
-				page: '1',
-				pageSize: '4',
+				guessLike: '1', // 只要有这个字段就行
 				bookType: '1'
 			}).then(res => {
 				this.$loading.hide()
@@ -116,31 +115,31 @@ export default {
 			})
 		},
 		
-		getMailHots () { // 男频热榜，默认追书最热榜 Top100
+		getMailHots () { // 男频热榜，默认男频人气榜
 			this.$loading.show()
 			getBookList({
 				page: '1',
 				pageSize: '4',
-				bookType: '2'
+				rankType: 'BR1'
 			}).then(res => {
 				this.$loading.hide()
 				this.maleHots = res.list.slice(0, 3)
 			})
 		},
 		
-		getFemaleHots () { // 女频热榜，默认追书最热榜 Top100
+		getFemaleHots () { // 女频热榜，默认女频人气榜
 			this.$loading.show()
 			getBookList({
 				page: '1',
 				pageSize: '4',
-				bookType: '3'
+				rankType: 'GR1'
 			}).then(res => {
 				this.$loading.hide()
 				this.femaleHots = res.list.slice(0, 3)
 			})
 		},
 		
-		getNewBooks () { // 新书榜，默认新书榜
+		getNewBooks () { // 新书榜，默认连载榜
 			this.$loading.show()
 			getBookList({
 				page: '1',

@@ -29,7 +29,7 @@
 				<i class="iconfont icondownload icon"></i>
 				<div>缓存</div>
 			</div>
-			<div class="item-tool">
+			<div class="item-tool" @click="changeSource">
 				<i class="iconfont iconhuan icon"></i>
 				<div>换源</div>
 			</div>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { Toast } from 'vant'
 export default {
 	data () {
 		return {
@@ -101,6 +102,10 @@ export default {
 			this.$store.dispatch('setSetting', {
 				dayNight: this.setting.dayNight == 'day' ? 'night' : 'day'
 			})
+		},
+		
+		changeSource () { // 换源
+			Toast('敬请期待！')
 		}
 	}
 }

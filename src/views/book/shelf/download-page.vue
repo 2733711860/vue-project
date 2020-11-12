@@ -2,7 +2,9 @@
 	<div class="download-page">
 		<reader-header-two title="缓存管理"></reader-header-two>
 		
-		<div class="download-list">
+		<van-empty description="还没有缓存书籍哦~~~" v-if="cacheBooks.length == 0" />
+		
+		<div class="download-list" v-else>
 			<div class="item-book" v-for="(item, index) in cacheBooks" :key="index + 'cache'">
 				<div class="item-top">
 					<div>{{item.bookName}}（{{item.cacheStartOrigin + 1}} - {{item.chaptersCount}}章）</div>
