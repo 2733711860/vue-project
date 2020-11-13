@@ -17,7 +17,7 @@
 		  center
 		  clearable
 		  label="书籍链接"
-		  placeholder="请输入书籍URL链接"
+		  placeholder="请输入书籍链接"
 		>
 		  <template #button>
 		    <van-button size="small" type="default">获取</van-button>
@@ -43,9 +43,12 @@ export default {
 			showAction: false,
 			chooseNet: {}, // 选择的网站
 			actions: [ // 支持的网站列表
-				{ name: '笔趣阁', value: '' }, 
-				{ name: '风雨小说网', value: '', subname: '移动端' }, 
-				{ name: '风雨小说网', value: '', subname: 'PC端' },
+				{ name: '皮皮小说网', value: '' }, 
+				{ name: '风雨小说网（移动端）', value: '' }, 
+				{ name: '风雨小说网（PC端）', value: '' },
+				{ name: '520小说网', value: '' },  // 女频小说
+				{ name: '88小说网', value: '' },
+				{ name: '新笔下文学', value: '' }
 			]
 		}
 	},
