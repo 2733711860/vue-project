@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { getChapters } from '../../../api/index.js'
 export default {
 	computed: {
 		thisBook () {

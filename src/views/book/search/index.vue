@@ -31,7 +31,7 @@
 import readerSearch from '../components/reader-search.vue'
 import readerHotSearch from '../components/reader-hot-search.vue'
 import readerBookList from '../components/reader-bookList.vue'
-import { getBookList, getSearchHotKey } from '../../../api/index.js'
+import { getBookByWord, getHotWord } from '../../../api/index.js'
 import { getBook } from '../../../utils/bookUtil.js'
 export default {
 	components: {
@@ -64,9 +64,9 @@ export default {
 	methods: {
 		getHotWord () { // 获取热搜列表
 			this.$loading.show()
-			getSearchHotKey().then(res => {
+			getHotWord().then(res => {
 				this.$loading.hide()
-				this.hotList = res.list
+				this.hotList = res.data.list
 			})
 		},
 		
@@ -76,21 +76,20 @@ export default {
 			this.searchResult = []
 			this.page = 0
 			this.finished = false
-			this.getSearchs()
 		},
 		
 		getSearchs () { // 搜索接口
 			this.$store.dispatch('setHistory', this.searchKey) // 保存搜索历史
 			this.$loading.show()
-			getBookList({
+			getBookByWord({
 				keyWord: this.searchKey == '' ? '元尊' : this.searchKey,
 				page: this.page,
 				pageSize: this.pageSize
 			}).then(res => {
 				this.$loading.hide()
-				this.searchResult = [...this.searchResult, ...res.list]
+				this.searchResult = [...this.searchResult, ...res.data.list]
 				this.loading = false
-				if (this.searchResult.length == res.total) { // 数据全部加载完成
+				if (this.searchResult.length == res.data.total) { // 数据全部加载完成
 					this.finished = true
 				}
 			})

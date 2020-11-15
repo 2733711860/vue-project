@@ -140,7 +140,7 @@ export default {
 			flex-wrap: wrap;
 			background-color: #FFFFFF;
 			.book-shelf-one{
-				margin: 10px 12px 10px 12px;
+				margin: 10px 20px 10px 15px;
 			}
 			.book-shelf-one:last-child{
 				margin-right: 0;

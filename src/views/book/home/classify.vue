@@ -17,7 +17,7 @@
 <script>
 import { typeObj } from '../../../utils/bookUtil.js'
 import readerBookList from '../components/reader-bookList.vue'
-import { getBookList } from '../../../api/index.js'
+import { getBookByType } from '../../../api/index.js'
 export default {
 	components: {
 		readerBookList
@@ -47,21 +47,24 @@ export default {
 	methods: {
 		getBook () {
 			this.$loading.show()
-			getBookList({
+			getBookByType({
 				page: this.page,
 				pageSize: this.pageSize,
 				bookType: this.typeList[this.active].value
 			}).then(res => {
 				this.$loading.hide()
-				this.bookList = [...this.bookList, ...res.list]
+				this.bookList = [...this.bookList, ...res.data.list]
 				this.loading = false
-				if (this.bookList.length == res.total) { // 数据全部加载完成
+				if (this.bookList.length == res.data.total) { // 数据全部加载完成
 					this.finished = true
 				}
 			})
 		},
 		
 		onChange (item) { // 点击左侧切换排行榜
+			$(".van-tabs__content").animate({
+				scrollTop: 0
+			}, 0)
 			this.bookType = item.value
 			this.page = 0
 			this.bookList = []

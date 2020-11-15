@@ -20,9 +20,16 @@
 		  placeholder="请输入书籍链接"
 		>
 		  <template #button>
-		    <van-button size="small" type="default">获取</van-button>
+		    <van-button size="small" type="default" @click="getCrawlBook">获取</van-button>
 		  </template>
 		</van-field>
+		
+		<reader-item-book
+			class="crawl-book"
+			v-for="(item, index) in crawlBooks"
+			:key="index"
+		  :bookBasic="item"
+		></reader-item-book>
 		
 		<van-action-sheet
 		  v-model="showAction"
@@ -36,26 +43,49 @@
 </template>
 
 <script>
+import { getBookDetail } from '../../../api/index.js'
+import readerItemBook from '../components/reader-item-book.vue'
+import { Toast } from 'vant'
 export default {
+	components: {
+		readerItemBook
+	},
+	
 	data () {
 		return {
 			link: '', // 爬取的书籍url
 			showAction: false,
-			chooseNet: {}, // 选择的网站
+			chooseNet: { name: '风雨小说网（移动端）', value: '2' }, // 选择的网站
 			actions: [ // 支持的网站列表
-				{ name: '皮皮小说网', value: '' }, 
-				{ name: '风雨小说网（移动端）', value: '' }, 
-				{ name: '风雨小说网（PC端）', value: '' },
-				{ name: '520小说网', value: '' },  // 女频小说
-				{ name: '88小说网', value: '' },
-				{ name: '新笔下文学', value: '' }
-			]
+				{ name: '皮皮小说网', value: '1' }, 
+				{ name: '风雨小说网（移动端）', value: '2' }, 
+				{ name: '风雨小说网（PC端）', value: '3' },
+				{ name: '520小说网', value: '4' },  // 女频小说
+				{ name: '88小说网', value: '5' },
+				{ name: '新笔下文学', value: '6' }
+			],
+			crawlBooks: [] // 手动爬取的小说
 		}
 	},
 	
 	methods: {
 		onSelect (item) {
 			this.chooseNet = item
+		},
+		
+		getCrawlBook () {
+			this.$loading.show()
+			if (this.chooseNet.value == '2') { // 风雨小说网移动端
+				getBookDetail({
+					links: ['https://m.44pq.cc/book_67352/']
+				}).then(res => {
+					this.$loading.hide()
+					this.crawlBooks = res.data.books
+					if (this.crawlBooks.length == 0) {
+						Toast('未找到相关书籍')
+					}
+				})
+			}
 		}
 	}
 }
@@ -66,6 +96,11 @@ export default {
 		padding: 10px 0;
 		.center-notice{
 			margin-bottom: 10px;
+		}
+		.crawl-book{
+			background-color: #FFFFFF;
+			margin-top: 10px;
+			padding: 10px;
 		}
 	}
 </style>

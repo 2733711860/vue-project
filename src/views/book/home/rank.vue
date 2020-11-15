@@ -25,7 +25,7 @@
 
 <script>
 import readerBookList from '../components/reader-bookList.vue'
-import { getBookList } from '../../../api/index.js'
+import { getBookByRank } from '../../../api/index.js'
 import { maleRankTypeObj, femaleRankTypeObj } from '../../../utils/bookUtil.js'
 export default {
 	components: {
@@ -77,23 +77,26 @@ export default {
 	methods: {
 		getBook () {
 			this.$loading.show()
-			getBookList({
+			getBookByRank({
 				page: this.page,
 				pageSize: this.pageSize,
 				rankType: this.rankType
 			}).then(res => {
 				this.$loading.hide()
-				this.bookList = [...this.bookList, ...res.list]
+				this.bookList = [...this.bookList, ...res.data.list]
 				this.loading = false
-				if (this.bookList.length == res.total) { // 数据全部加载完成
+				if (this.bookList.length == res.data.total) { // 数据全部加载完成
 					this.finished = true
 				}
 			})
 		},
 		
 		onChange (item) { // 点击左侧切换排行榜
+			$(".rank-content").animate({
+				scrollTop: 0
+			}, 0)
 			this.rankType = item.value
-			this.page = 0
+			this.page = 1
 			this.bookList = []
 			this.finished = false
 			this.getBook()

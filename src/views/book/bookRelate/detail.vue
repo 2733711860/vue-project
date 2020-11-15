@@ -7,8 +7,9 @@
 			<div class="detail-top-content">
 				<div class="book-title">{{bookDetail.bookName}}</div>
 				<div class="book-author">作者：{{bookDetail.bookAuthor}}</div>
-				<div class="book-type">类型：{{bookDetail.bookType}}</div>
-				<div class="book-type">{{bookDetail.wordCount}}  |  {{bookDetail.isSerial ? '连载' : '完结'}}</div>
+				<div class="book-type">类型：{{bookDetail.bookType | getType}}</div>
+				<!-- <div class="book-type">{{bookDetail.wordCount}}  |  {{bookDetail.isSerial ? '连载' : '完结'}}</div> -->
+				<div class="book-type">状态：{{bookDetail.isSerial ? '连载' : '完结'}}</div>
 			</div>
 		</div>
 		
@@ -29,7 +30,7 @@
 		
 		<div class="chapter-msg">
 			<span class="chapter-title" @click="getChapter">查看目录</span>
-			<span class="newest">
+			<span class="newest" @click="goLastChapter">
 				<span class="chapter-name">最新：{{bookDetail.lastChapter}}</span>
 				<span class="chapter-btn">{{bookDetail.updatedTime | changeTime}}<van-icon name="arrow" /></span>
 			</span>
@@ -115,7 +116,8 @@
 import readerHeaderTwo from '../components/reader-header-two.vue'
 import readerItemBookTwo from '../components/reader-item-book-two.vue'
 import readerComment from '../components/reader-comment.vue'
-import { getBookChapter, getBookList } from '../../../api/index.js'
+import { getBookChapter, getBookByAuthor, getBookByRandom } from '../../../api/index.js'
+import { typeObj } from '../../../utils/bookUtil.js'
 import moment from 'moment'
 const ANCHOR_SCROLL_TOP = 160
 export default {
@@ -142,6 +144,9 @@ export default {
 	filters: {
 		changeTime (val) {
 			return moment(val).format('YYYY年MM月DD日 HH:mm')
+		},
+		getType (val) {
+			return typeObj[val]
 		}
 	},
 	
@@ -181,6 +186,20 @@ export default {
 			this.$store.dispatch('setIsShowMenu', true)
 		},
 		
+		goLastChapter () { // 最新章节
+			let lastIndex = this.bookDetail.chapters.length - 1 // 最新章节的index
+			this.$store.dispatch('setCacheBooks', { // 保存当前章节索引
+				currentChapterIndex: lastIndex,
+				bookId: this.bookDetail.bookId
+			})
+			this.$router.push({
+				path: '/book/bookRelate/bookTxt',
+				query: {
+					bookId: this.bookDetail.bookId
+				}
+			})
+		},
+		
 		onScrollChange ($event) { // 监听页面滚动
 			this.scrollTopValue = $event.target.scrollTop
 			let opacity = this.scrollTopValue / ANCHOR_SCROLL_TOP
@@ -210,19 +229,19 @@ export default {
 		},
 		
 		getLikeList () { // 猜你喜欢
-			getBookList({
+			getBookByRandom({
 				bookType: this.bookDetail.bookType,
-				guessLike: '1' // 只要有这个字段就行
+				bookNum: 3
 			}).then(res => {
-				this.likeBooks = res.list
+				this.likeBooks = res.data.list
 			})
 		},
 		
 		getAuthorBooks () { // 作者所有作品
-			getBookList({
+			getBookByAuthor({
 				bookAuthor: this.bookDetail.bookAuthor
 			}).then(res => {
-				this.authorBooks = res.list
+				this.authorBooks = res.data.list
 			})
 		},
 		
@@ -405,10 +424,12 @@ export default {
 		.book-list{
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-between;
 			padding: 10px;
 			.item-book{
-				margin: 5px 0;
+				margin: 5px 24px 5px 10px;
+			}
+			.item-book:last-child{
+				margin-right: 0;
 			}
 		}
 		.module-top{

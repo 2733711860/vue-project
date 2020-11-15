@@ -52,8 +52,8 @@ export default {
 						bookId: thisBook.bookId,
 						newReadChapter: {
 							chapterIndex: startIndex,
-							chapterName: res.title,
-							chapterContent: res.cpContent ? res.cpContent : '正文获取失败！'
+							chapterName: res.data.title,
+							chapterContent: res.data.cpContent ? res.data.cpContent : '正文获取失败！'
 						}
 					})
 					if (startIndex < endIndex) {

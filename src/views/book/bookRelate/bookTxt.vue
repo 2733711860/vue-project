@@ -153,18 +153,18 @@ export default {
 					link: currentLink
 				}).then(res => {
 					this.$loading.hide()
-					if (res.cpContent) {
-						this.bookContent = _nromalBook(res.title, res.cpContent)
+					if (res.data.cpContent) {
+						this.bookContent = _nromalBook(res.data.title, res.data.cpContent)
 					} else {
-						this.bookContent = _nromalBook(res.title, '正文获取失败！')
+						this.bookContent = _nromalBook(res.data.title, '正文获取失败！')
 					}
 					this.$store.dispatch('setCacheBooks', { // 保存章节信息
 						bookId: this.$route.query.bookId,
 						currentChapterIndex: this.currentIndex,
 						newReadChapter: {
 							chapterIndex: this.currentIndex,
-							chapterName: res.title,
-							chapterContent: res.cpContent ? res.cpContent : '正文获取失败！'
+							chapterName: res.data.title,
+							chapterContent: res.data.cpContent ? res.data.cpContent : '正文获取失败！'
 						}
 					})
 				})

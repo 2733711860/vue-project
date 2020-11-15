@@ -19,8 +19,6 @@ export default new Vuex.Store({
 		storage: window.localStorage,
 		reducer(val) {
 			return {
-				cats: val.cats,
-				ranks: val.ranks,
 				historyList: val.historyList,
 				cacheBooks: val.cacheBooks,
 				setting: val.setting

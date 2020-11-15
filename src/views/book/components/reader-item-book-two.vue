@@ -26,7 +26,7 @@ export default {
 	.item-book{
 		display: flex;
 		flex-direction: column;
-		width: 100px;
+		width: 90px;
 		img{
 			width: 100%;
 			height: 120px;
@@ -36,6 +36,7 @@ export default {
 			font-size: 14px;
 			line-height: 20px;
 			text-align: center;
+			margin-top: 5px;
 		}
 	}
 </style>

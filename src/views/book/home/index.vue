@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { getBookList } from '../../../api/index.js'
+import { getBookByRandom, getBookByRank } from '../../../api/index.js'
 import { getBook } from '../../../utils/bookUtil.js'
 import readerBookList from '../components/reader-bookList.vue'
 export default {
@@ -106,60 +106,60 @@ export default {
 	methods: {
 		getYouLike () { // 猜你喜欢，默认起点月票榜
 			this.$loading.show()
-			getBookList({
-				guessLike: '1', // 只要有这个字段就行
+			getBookByRandom({
+				bookNum: 3, // 随机获取的数量
 				bookType: '1'
 			}).then(res => {
 				this.$loading.hide()
-				this.likeBooks = res.list.slice(0, 3)
+				this.likeBooks = res.data.list
 			})
 		},
 		
 		getMailHots () { // 男频热榜，默认男频人气榜
 			this.$loading.show()
-			getBookList({
-				page: '1',
-				pageSize: '4',
+			getBookByRank({
+				page: 1,
+				pageSize: 3,
 				rankType: 'BR1'
 			}).then(res => {
 				this.$loading.hide()
-				this.maleHots = res.list.slice(0, 3)
+				this.maleHots = res.data.list
 			})
 		},
 		
 		getFemaleHots () { // 女频热榜，默认女频人气榜
 			this.$loading.show()
-			getBookList({
-				page: '1',
-				pageSize: '4',
+			getBookByRank({
+				page: 1,
+				pageSize: 3,
 				rankType: 'GR1'
 			}).then(res => {
 				this.$loading.hide()
-				this.femaleHots = res.list.slice(0, 3)
+				this.femaleHots = res.data.list
 			})
 		},
 		
 		getNewBooks () { // 新书榜，默认连载榜
 			this.$loading.show()
-			getBookList({
-				page: '1',
-				pageSize: '4',
-				bookType: '4'
+			getBookByRank({
+				page: 1,
+				pageSize: 3,
+				rankType: 'BR5'
 			}).then(res => {
 				this.$loading.hide()
-				this.newBooks = res.list.slice(0, 3)
+				this.newBooks = res.data.list
 			})
 		},
 		
 		getEndBooks () { // 完结榜，默认完结榜
 			this.$loading.show()
-			getBookList({
-				page: '1',
-				pageSize: '4',
-				bookType: '5'
+			getBookByRank({
+				page: 1,
+				pageSize: 3,
+				rankType: 'BR6'
 			}).then(res => {
 				this.$loading.hide()
-				this.endBooks = res.list.slice(0, 3)
+				this.endBooks = res.data.list
 			})
 		},
 	}
