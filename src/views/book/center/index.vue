@@ -55,14 +55,14 @@ export default {
 		return {
 			link: '', // 爬取的书籍url
 			showAction: false,
-			chooseNet: { name: '风雨小说网（移动端）', value: '2' }, // 选择的网站
+			chooseNet: { name: '风雨小说网（移动端）', value: '' }, // 选择的网站
 			actions: [ // 支持的网站列表
-				{ name: '皮皮小说网', value: '1' }, 
-				{ name: '风雨小说网（移动端）', value: '2' }, 
-				{ name: '风雨小说网（PC端）', value: '3' },
-				{ name: '520小说网', value: '4' },  // 女频小说
-				{ name: '88小说网', value: '5' },
-				{ name: '新笔下文学', value: '6' }
+				{ name: '皮皮小说网', value: 'pp' }, 
+				{ name: '风雨小说网（移动端）', value: '' }, 
+				{ name: '风雨小说网（PC端）', value: 'fy' },
+				{ name: '520小说网', value: 'wel' },  // 女频小说
+				{ name: '88小说网', value: 'bb' },
+				{ name: '新笔下文学', value: 'xbx' }
 			],
 			crawlBooks: [] // 手动爬取的小说
 		}
@@ -71,6 +71,7 @@ export default {
 	methods: {
 		onSelect (item) {
 			this.chooseNet = item
+			this.$store.dispatch('setApiSource', item.value)
 		},
 		
 		getCrawlBook () {

@@ -1,4 +1,5 @@
 const state = {
+	apiSource: '', // api接口源  风雨小说网移动端为''， 风雨小说网PC端为 fy
 	isShowMenu: false, // 是否显示侧边目录
 	bookSourceId: null, // 当前小说源id
 	historyList: [], // 搜索历史

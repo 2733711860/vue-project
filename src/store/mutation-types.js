@@ -1,3 +1,5 @@
+export const SET_APISOURCE = 'SET_APISOURCE' // api接口源
+
 export const SET_ISSHOWMENU = 'SET_ISSHOWMENU' // 是否显示侧边目录
 
 export const SET_BOOKSOURCEID = 'SET_BOOKSOURCEID' // 当前小说源
