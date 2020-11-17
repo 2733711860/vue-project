@@ -65,13 +65,14 @@ export default {
 			flex-direction: column;
 			.chapter-top{
 				height: 60px;
-				padding: 0 10px;
+				padding: 0 15px;
 				border-bottom: 1px solid #ebebeb;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				.book-name{
 					font-weight: bold;
+					line-height: 20px;
 				}
 				.chapter-reserve{
 					color: #999999;
@@ -86,7 +87,7 @@ export default {
 					color: #999999;
 					height: 40px;
 					line-height: 40px;
-					padding: 0 10px;
+					padding: 0 15px;
 					border-bottom: 1px solid #ebebeb;
 					text-overflow: ellipsis;
 					white-space: nowrap;

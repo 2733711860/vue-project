@@ -15,7 +15,7 @@ const state = {
 		defaultLineHeight: 30, // 默认行间距
 		turnPageMode: 3, // 翻页模式 0:整页   1:平滑   2:点滑   3:无   4:仿真
 		backgroundColor: 'rgba(236, 216, 179, 1)', // 阅读背景颜色
-		shelfTheme: '0', // 书架布局  0：经典书架  1：简约列表
+		shelfTheme: '1', // 书架布局  0：经典书架  1：简约列表
 	},
 }
 

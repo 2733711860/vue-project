@@ -20,7 +20,7 @@
 
 <style scoped="scoped" lang="less">
 	.item-comment{
-		padding: 15px 10px;
+		padding: 15px;
 		border-bottom: 1px solid #FAF8FA;
 		.comment-top{
 			display: flex;

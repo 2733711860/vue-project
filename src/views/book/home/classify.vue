@@ -83,7 +83,9 @@ export default {
 	.classify-page{
 		height: 100%;
 		.book-list{
-			padding: 0 10px;
+			padding: 0 15px;
+			background-color: #FFFFFF;
+			margin-top: 10px;
 		}
 	}
 </style>

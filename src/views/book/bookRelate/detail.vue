@@ -314,7 +314,7 @@ export default {
 		background: url(../../../assets/img/14.jpg) no-repeat;
 		background-size: 100% 100%;
 		display: flex;
-		padding: 50px 10px 10px;
+		padding: 50px 15px 10px;
 		color: #FFFFFF;
 		img{
 			width: 100px;
@@ -345,7 +345,7 @@ export default {
 		font-size: 12px;
 		line-height: 18px;
 		text-indent: 28px;
-		padding: 10px;
+		padding: 10px 15px;
 		position: relative;
 		background-color: #FFFFFF;
 		.more-btn{
@@ -396,7 +396,7 @@ export default {
 		display: flex;
 		.chapter-title{
 			color: #1989fa;
-			padding: 0 10px;
+			padding: 0 10px 0 15px;
 		}
 		.newest{
 			flex: 1;
@@ -413,7 +413,7 @@ export default {
 			.chapter-btn{
 				display: flex;
 				align-items: center;
-				padding-right: 10px;
+				padding-right: 15px;
 			}
 		}
 	}
@@ -424,9 +424,9 @@ export default {
 		.book-list{
 			display: flex;
 			flex-wrap: wrap;
-			padding: 10px;
+			padding: 10px 15px;
 			.item-book{
-				margin: 5px 24px 5px 10px;
+				margin: 5px 15px 5px 10px;
 			}
 			.item-book:last-child{
 				margin-right: 0;
@@ -434,7 +434,7 @@ export default {
 		}
 		.module-top{
 			height: 40px;
-			padding: 0 10px;
+			padding: 0 15px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;

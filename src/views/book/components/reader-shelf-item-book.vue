@@ -39,7 +39,7 @@ export default {
 <style scoped="scoped" lang="less">
 	.module-book{
 		display: flex;
-		padding: 10px;
+		padding: 10px 15px;
 		.module-book-pic{
 			width: 70px;
 			height: 100px;

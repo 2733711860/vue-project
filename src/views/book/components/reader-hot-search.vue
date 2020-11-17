@@ -56,7 +56,7 @@ export default {
 		.hot-list{
 			display: flex;
 			flex-wrap: wrap;
-			padding: 0 10px;
+			padding: 0 15px;
 			.item-hot{
 				font-size: 12px;
 				padding: 5px 12px;

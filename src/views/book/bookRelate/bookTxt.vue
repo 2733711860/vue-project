@@ -24,10 +24,10 @@
 				class="read-content" 
 				v-if="pagingPattern==1 || pagingPattern==2 || pagingPattern==3"
 			>
-				<p class="book-title1" style="padding: 10px;">{{bookContent.title}}</p>
-				<div class="read-article" style="padding: 0 10px;">
+				<p class="book-title1" style="padding: 15px;">{{bookContent.title}}</p>
+				<div class="read-article" style="padding: 0 15px;">
 				  <section class="read-section" :style="styleObject">
-				    <div class="read-section-inner" :style="{columns: clWidth-20+'px', columnGap: 10+'px'}" ref="bookInner" id="bookInner">
+				    <div class="read-section-inner" :style="{columns: clWidth-30+'px', columnGap: 15+'px'}" ref="bookInner" id="bookInner">
 				      <h1 class="book-title" :style="{fontSize: (setting.fontSize + 4) + 'px'}">{{bookContent.title}}</h1>
 				      <div class="book-inner" :style="{lineHeight: setting.lineHeight + 'px'}" v-html="bookContent.content"></div>
 				    </div>
@@ -209,12 +209,12 @@ export default {
 						this.currentPaging--
 						if (this.pagingPattern == 2) {
 							this.styleObject = {
-								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')',
+								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')',
 								transitionDuration: '0.5s'
 							}
 						} else if (this.pagingPattern == 3) {
 							this.styleObject = {
-								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')'
+								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')'
 							}
 						}
 					} else {
@@ -228,12 +228,12 @@ export default {
 						this.currentPaging++
 						if (this.pagingPattern == 2) {
 							this.styleObject = {
-								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')',
+								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')',
 								transitionDuration: '0.5s'
 							}
 						} else if (this.pagingPattern == 3) {
 							this.styleObject = {
-								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')'
+								transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')'
 							}
 						}
 					}
@@ -247,7 +247,7 @@ export default {
 				if (this.resultPaging > this.currentPaging) { // 不是最后一页
 					if (Math.abs(this.offsetX) < this.clWidth) {
 						this.styleObject = {
-							transform: 'translateX(' + (this.offsetX + (1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')'
+							transform: 'translateX(' + (this.offsetX + (1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')'
 						}
 					}
 				}
@@ -264,7 +264,7 @@ export default {
 							this.currentPaging++
 						}
 						this.styleObject = {
-							transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')',
+							transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')',
 							transitionDuration: '0.5s'
 						}
 					}
@@ -274,7 +274,7 @@ export default {
 							this.currentPaging--
 						}
 						this.styleObject = {
-							transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 10)) + 'px' + ')',
+							transform: 'translateX(' + ((1 - this.currentPaging) * (this.clWidth - 15)) + 'px' + ')',
 							transitionDuration: '0.5s'
 						}
 					} else {
@@ -291,7 +291,7 @@ export default {
 					this.offsetX = e.deltaX
 					if (Math.abs(this.offsetX) < this.clWidth) {
 						this.styleObject = {
-							transform: 'translateX(' + (this.offsetX - (this.currentPaging - 1) * (this.clWidth - 10)) + 'px' + ')'
+							transform: 'translateX(' + (this.offsetX - (this.currentPaging - 1) * (this.clWidth - 15)) + 'px' + ')'
 						}
 					}
 				}
@@ -338,7 +338,7 @@ export default {
 		height: 100%;
 	}
 	.book-contents{
-		padding: 30px 10px 50px 10px;
+		padding: 30px 15px 50px 15px;
 		.book-inner{
 			text-align: justify;
 			text-indent: 2em;
@@ -395,7 +395,7 @@ export default {
 		}
 		.article-page{
 			position: absolute;
-			left: 10px;
+			left: 15px;
 			bottom: 10px;
 			font-size: 12px;
 		}
@@ -403,4 +403,12 @@ export default {
 	    
 	   
 	    
+</style>
+
+<style lang="less">
+	.read-page{
+		p{
+			margin-bottom: 10px;
+		}
+	}
 </style>

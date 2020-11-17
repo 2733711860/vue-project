@@ -59,15 +59,20 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0 10px;
+		padding: 0 15px;
 		transform: translateY(-40px);
 		transition: transform 0.5s;
+		overflow: hidden;
 		.top-left{
 			flex: 1;
 			display: flex;
 			align-items: center;
+			overflow: hidden;
 			span{
 				margin-left: 5px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 			}
 		}
 	}

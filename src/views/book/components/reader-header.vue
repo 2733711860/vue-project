@@ -27,7 +27,7 @@ export default {
 <style scoped="scoped" lang="less">
 	.book-head{
 		height: 40px;
-		padding: 0 10px;
+		padding: 0 15px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

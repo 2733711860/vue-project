@@ -50,7 +50,7 @@ export default {
 	.book-head{
 		width: 100%;
 		height: 40px;
-		padding: 0 10px;
+		padding: 0 15px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

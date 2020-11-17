@@ -84,7 +84,7 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 20px 10px;
+				padding: 20px 15px;
 				border-bottom: 1px solid #d5d5d5;
 			}
 			.menu-content{
@@ -93,7 +93,7 @@ export default {
 				.item-chapter{
 					height: 40px;
 					line-height: 40px;
-					padding: 0 10px;
+					padding: 0 15px;
 					border-bottom: 1px solid #d5d5d5;
 					display: flex;
 					.dian{

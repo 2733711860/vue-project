@@ -120,7 +120,7 @@ export default {
 		.search-result{
 			flex: 1;
 			overflow-y: auto;
-			padding: 10px;
+			padding: 10px 15px;
 		}
 	}
 </style>

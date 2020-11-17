@@ -169,7 +169,7 @@ export default {
 <style scoped="scoped" lang="less">
 	.item-module{
 		background-color: #FFFFFF;
-		padding: 10px;
+		padding: 10px 15px;
 		margin-top: 10px;
 		.module-top{
 			height: 40px;

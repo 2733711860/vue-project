@@ -135,7 +135,7 @@ export default {
 			width: calc(100vw - 85px);
 			background-color: #FFFFFF;
 			height: 100%;
-			padding: 0 10px;
+			padding: 0 15px 0 10px;
 		}
 	}
 </style>

@@ -8,7 +8,7 @@ import { get } from './http.js'
 import store from "../store/index";
 
 let apiStr = store.state.apiSource == '' ? 'reader' : `reader/${store.state.apiSource}`
-export const baseUrl = `http://121.41.79.10/${apiStr}`
+export const baseUrl = `http://121.41.79.10:8080/${apiStr}`
 // export const baseUrl = `http://mengdong.ltd/${apiStr}`
 // export const baseUrl = 'http://localhost:8080/reader' // 风雨小说网移动端
 // export const baseUrl = 'https://www.fastmock.site/mock/f5b0436d25760cd9e4b88fdf3de4d459/api'
