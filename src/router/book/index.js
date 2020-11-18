@@ -104,6 +104,15 @@ export default [
 		    meta: {
 		    	title: '缓存管理'
 		    }
+	    }, {
+	      path: '/book/rootpage',
+	      name: 'book/rootpage',
+	      component: resolve => {
+		      require(['@/views/book/rootpage/index.vue'], resolve)
+		    },
+		    meta: {
+		    	title: '后台管理'
+		    }
 	    }
     ]
   }
