@@ -25,11 +25,6 @@ const mutations = {
 	[types.SET_SETTING](state, setting) {
 	  state.setting = setting
 	},
-	
-	// api接口源
-	[types.SET_APISOURCE](state, apiSource) {
-	  state.apiSource = apiSource
-	},
 }
 
 export default mutations

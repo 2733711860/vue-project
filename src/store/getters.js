@@ -1,5 +1,3 @@
-export const apiSource = state => state.apiSource // api接口源
-
 export const isShowMenu = state => state.isShowMenu // 是否显示侧边目录
 
 export const bookSourceId = state => state.bookSourceId // 当前小说源

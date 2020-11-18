@@ -75,11 +75,11 @@ export default {
 		return {
 			link: '', // 爬取的书籍url
 			showAction: false,
-			chooseNet: { name: '风雨小说网（移动端）', value: '' }, // 选择的网站
+			chooseNet: { name: '风雨小说网（PC端）', value: 'fy_pc' }, // 选择的网站
 			actions: [ // 支持的网站列表
 				{ name: '皮皮小说网', value: 'pp', disabled: true }, 
-				{ name: '风雨小说网（移动端）', value: '' }, 
-				{ name: '风雨小说网（PC端）', value: 'fy', disabled: true },
+				{ name: '风雨小说网（移动端）', value: 'fy_yd', disabled: true }, 
+				{ name: '风雨小说网（PC端）', value: 'fy_pc' },
 				{ name: '520小说网', value: 'wel', disabled: true },  // 女频小说
 				{ name: '88小说网', value: 'bb', disabled: true },
 				{ name: '新笔下文学', value: 'xbx', disabled: true }
@@ -91,7 +91,6 @@ export default {
 	methods: {
 		onSelect (item) {
 			this.chooseNet = item
-			this.$store.dispatch('setApiSource', item.value)
 		},
 		
 		getCrawlBook () {
@@ -100,6 +99,7 @@ export default {
 				links.push(this.link)
 				this.$loading.show()
 				getBookDetail({
+					source: this.chooseNet.value,
 					links: links
 				}).then(res => {
 					this.$loading.hide()

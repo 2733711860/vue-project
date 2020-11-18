@@ -1,10 +1,5 @@
 import * as types from './mutation-types'
 
-// api接口源
-export const setApiSource = function({ commit }, apiSource) {
-  commit(types.SET_APISOURCE, apiSource)
-}
-
 // 是否显示侧边目录
 export const setIsShowMenu = function({ commit }, isShowMenu) {
   commit(types.SET_ISSHOWMENU, isShowMenu)

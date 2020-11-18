@@ -113,8 +113,8 @@ export default {
 		
 		changeFontSize (type) { // 切换字体大小
 			let fontsize = this.setting.fontSize
-			if (type == '-' && fontsize > 9) fontsize--;
-			if (type == '+' && fontsize < 20) fontsize++;
+			if (type == '-' && fontsize > 10) fontsize--;
+			if (type == '+' && fontsize < 22) fontsize++;
 			if (!type) fontsize = this.setting.defaultFontSize;
 			this.$store.dispatch('setSetting', {
 				fontSize: fontsize

@@ -41,11 +41,16 @@ export default {
 	
 	watch: {
 		showMenu () {
+			this.setScroll()
 			this.$emit('input', this.showMenu)
 		},
 		value () {
 			this.showMenu = this.value
 		}
+	},
+	
+	mounted () {
+		this.setScroll()
 	},
 	
 	methods: {
@@ -56,6 +61,13 @@ export default {
 		setChapter (index) {
 			this.$emit('getThisContent', index)
 			this.showMenu = false
+		},
+		
+		setScroll () { // 当前章节始终在中间位置
+			if ($(".icondeng").offset().top > document.body.clientHeight/2) {
+				let scrollHeight = $(".icondeng").offset().top - document.body.clientHeight/2
+				$(".menu-content").scrollTop(scrollHeight)
+			}
 		}
 	}
 }

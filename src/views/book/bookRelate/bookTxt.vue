@@ -150,6 +150,7 @@ export default {
 				let currentLink = this.thisBook.chapters[this.currentIndex].link // 当前章节链接
 				this.$loading.show()
 				getBookContent({
+					source: this.thisBook.source,
 					link: currentLink
 				}).then(res => {
 					this.$loading.hide()
@@ -260,7 +261,7 @@ export default {
 					if (this.resultPaging == this.currentPaging) { // 最后一页
 						this.nextChapter()
 					} else {
-						if (Math.abs(this.offsetX) > this.clWidth/4) { // 左滑距离小于四分之一，则不翻页
+						if (Math.abs(this.offsetX) > this.clWidth/6) { // 左滑距离小于六分之一，则不翻页
 							this.currentPaging++
 						}
 						this.styleObject = {
@@ -270,7 +271,7 @@ export default {
 					}
 				} else { // 右滑
 					if (this.currentPaging != 1) { // 不是第一页
-						if (Math.abs(this.offsetX) > this.clWidth/4) { // 右滑距离小于四分之一，则翻页
+						if (Math.abs(this.offsetX) > this.clWidth/6) { // 右滑距离小于六分之一，则翻页
 							this.currentPaging--
 						}
 						this.styleObject = {

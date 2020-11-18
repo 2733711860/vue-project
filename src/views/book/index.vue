@@ -46,7 +46,8 @@ export default {
 			} else { // 本章没有缓存
 				let currentLink = thisBook.chapters[startIndex].link // 当前章节链接
 				getBookContent({
-					link: currentLink
+					link: currentLink,
+					source: thisBook.source
 				}).then(res => {
 					this.$store.dispatch('setCacheBooks', { // 保存章节信息
 						bookId: thisBook.bookId,

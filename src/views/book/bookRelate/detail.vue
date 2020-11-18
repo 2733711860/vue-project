@@ -171,7 +171,8 @@ export default {
 		getChapters () { // 调接口获取目录
 			this.$loading.show()
 			getBookChapter({
-				bookId: this.bookDetail.bookId
+				bookId: this.bookDetail.bookId,
+				source: this.bookDetail.source
 			}).then(res => {
 				this.$loading.hide()
 				this.$store.dispatch('setCacheBooks', { // 保存书籍信息
